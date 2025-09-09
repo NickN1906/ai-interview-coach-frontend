@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>AI Interview Coach - Canadian Job Market Preparation</title>
+    <title>Immnet AI Interview Coach - Canadian Job Market Preparation</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +13,8 @@
         }
         
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #FFF9F5;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,32 +25,50 @@
         .container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(219, 24, 24, 0.1);
             max-width: 900px;
             width: 100%;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             max-height: 90vh;
+            border: 2px solid #DB1818;
         }
         
         .header {
-            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .network-logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+            fill: white;
         }
         
         .header h1 {
             font-size: 2.2em;
-            margin-bottom: 10px;
-            font-weight: 700;
+            font-weight: 900;
+            font-family: 'Lato', sans-serif;
+            color: white;
         }
         
         .header p {
             font-size: 1.1em;
             opacity: 0.9;
             font-weight: 300;
+            margin-top: 10px;
         }
         
         .content {
@@ -65,9 +84,10 @@
         
         .upload-section h3 {
             text-align: center;
-            color: #3276EA;
+            color: #DB1818;
             margin-bottom: 30px;
             font-size: 1.5em;
+            font-weight: 700;
         }
         
         .upload-grid {
@@ -78,46 +98,50 @@
         }
         
         .upload-item {
-            border: 2px solid #e1e5e9;
+            border: 2px solid #FFF9F5;
             border-radius: 12px;
             padding: 25px;
             transition: all 0.3s ease;
+            background: #FFF9F5;
         }
         
         .upload-item.completed {
-            border-color: #28a745;
-            background-color: #f8fff9;
+            border-color: #DB1818;
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(219, 24, 24, 0.1);
         }
         
         .upload-item h4 {
-            color: #3276EA;
+            color: #DB1818;
             margin-bottom: 15px;
             font-size: 1.2em;
+            font-weight: 700;
         }
         
         /* Resume Upload */
         .upload-area {
-            border: 2px dashed #e1e5e9;
+            border: 2px dashed #DB1818;
             border-radius: 8px;
             padding: 30px 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            background: white;
         }
         
         .upload-area:hover {
-            border-color: #3276EA;
-            background-color: #f8f9ff;
+            border-color: #8A0F0F;
+            background-color: #FFF9F5;
         }
         
         .upload-area.dragover {
-            border-color: #3276EA;
-            background-color: #f0f4ff;
+            border-color: #8A0F0F;
+            background-color: #FFF9F5;
         }
         
         .upload-icon {
             font-size: 2.5em;
-            color: #3276EA;
+            color: #DB1818;
             margin-bottom: 10px;
         }
         
@@ -126,7 +150,7 @@
         }
         
         .upload-btn {
-            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -136,45 +160,50 @@
             cursor: pointer;
             transition: transform 0.2s ease;
             margin-top: 10px;
+            font-family: 'Lato', sans-serif;
         }
         
         .upload-btn:hover {
             transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(219, 24, 24, 0.3);
         }
         
         .file-selected {
             display: none;
             margin-top: 15px;
             padding: 10px;
-            background: #e8f5e8;
+            background: #FFF9F5;
             border-radius: 6px;
-            color: #2e7d32;
+            color: #DB1818;
             font-weight: 500;
+            border: 1px solid #DB1818;
         }
         
         /* Job Description */
         .job-description-textarea {
             width: 100%;
             min-height: 150px;
-            border: 2px solid #e1e5e9;
+            border: 2px solid #DB1818;
             border-radius: 8px;
             padding: 15px;
             font-size: 14px;
-            font-family: inherit;
+            font-family: 'Lato', sans-serif;
             resize: vertical;
             transition: border-color 0.3s ease;
+            background: white;
         }
         
         .job-description-textarea:focus {
             outline: none;
-            border-color: #3276EA;
+            border-color: #8A0F0F;
+            box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
         }
         
         .job-desc-completed {
             display: none;
             margin-top: 10px;
-            color: #2e7d32;
-            font-weight: 500;
+            color: #DB1818;
+            font-weight: 600;
         }
         
         /* Start Interview Button */
@@ -184,7 +213,7 @@
         }
         
         .start-interview-btn {
-            background: linear-gradient(135deg, #28a745 0%, #20993e 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             border: none;
             padding: 18px 40px;
@@ -193,24 +222,26 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 4px 15px rgba(219, 24, 24, 0.3);
+            font-family: 'Lato', sans-serif;
         }
         
         .start-interview-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 6px 20px rgba(219, 24, 24, 0.4);
         }
         
         .start-interview-btn:disabled {
-            background: #ccc;
+            background: #332D2D;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+            opacity: 0.6;
         }
         
         .requirements-text {
             margin-top: 15px;
-            color: #666;
+            color: #332D2D;
             font-size: 14px;
         }
         
@@ -225,10 +256,11 @@
             flex: 1;
             overflow-y: auto;
             padding: 20px;
-            background: #f8f9fa;
+            background: #FFF9F5;
             border-radius: 8px;
             margin-bottom: 20px;
             max-height: 400px;
+            border: 1px solid #DB1818;
         }
         
         .message {
@@ -239,12 +271,14 @@
         }
         
         .message.ai {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            background: white;
             margin-right: 60px;
+            border: 1px solid #DB1818;
+            color: #332D2D;
         }
         
         .message.user {
-            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             margin-left: 60px;
             text-align: right;
@@ -264,22 +298,24 @@
         
         .chat-input {
             flex: 1;
-            border: 2px solid #e1e5e9;
+            border: 2px solid #DB1818;
             border-radius: 8px;
             padding: 12px 16px;
             font-size: 16px;
             resize: vertical;
             min-height: 50px;
             max-height: 120px;
+            font-family: 'Lato', sans-serif;
         }
         
         .chat-input:focus {
             outline: none;
-            border-color: #3276EA;
+            border-color: #8A0F0F;
+            box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
         }
         
         .send-btn {
-            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -287,11 +323,13 @@
             cursor: pointer;
             font-weight: 600;
             height: 50px;
+            font-family: 'Lato', sans-serif;
         }
         
         .send-btn:disabled {
-            background: #ccc;
+            background: #332D2D;
             cursor: not-allowed;
+            opacity: 0.6;
         }
         
         /* Status Messages */
@@ -303,42 +341,44 @@
         }
         
         .status.loading {
-            background: #e3f2fd;
-            color: #1976d2;
-            border: 1px solid #bbdefb;
+            background: #FFF9F5;
+            color: #DB1818;
+            border: 1px solid #DB1818;
         }
         
         .status.success {
-            background: #e8f5e8;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
+            background: #FFF9F5;
+            color: #DB1818;
+            border: 1px solid #DB1818;
         }
         
         .status.error {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ef9a9a;
+            background: #FF1C1C;
+            color: white;
+            border: 1px solid #8A0F0F;
         }
         
         /* Summary Section */
         .summary-section {
             display: none;
-            background: #f8f9fa;
+            background: #FFF9F5;
             border-radius: 8px;
             padding: 25px;
             margin-top: 20px;
+            border: 2px solid #DB1818;
         }
         
         .summary-section h3 {
-            color: #3276EA;
+            color: #DB1818;
             margin-bottom: 15px;
             font-size: 1.4em;
+            font-weight: 700;
         }
         
         .summary-content {
             white-space: pre-line;
             line-height: 1.7;
-            color: #444;
+            color: #332D2D;
         }
         
         /* Control Buttons */
@@ -355,17 +395,18 @@
         }
         
         .control-btn {
-            background: linear-gradient(135deg, #28a745 0%, #20993e 100%);
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             border: none;
             padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
+            font-family: 'Lato', sans-serif;
         }
         
         .control-btn.secondary {
-            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+            background: linear-gradient(135deg, #332D2D 0%, #8A0F0F 100%);
         }
         
         /* Loading Animation */
@@ -385,37 +426,6 @@
             80%, 100% { content: '...'; }
         }
         
-        /* API Configuration */
-        .config-section {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        
-        .config-section h4 {
-            color: #856404;
-            margin-bottom: 15px;
-        }
-        
-        .config-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        
-        .config-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -428,28 +438,52 @@
             }
             .message.ai { margin-right: 20px; }
             .message.user { margin-left: 20px; }
+            .logo-container { flex-direction: column; }
+            .network-logo { margin-right: 0; margin-bottom: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>AI Interview Coach</h1>
+            <div class="logo-container">
+                <svg class="network-logo" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Network emblem based on brand guidelines -->
+                    <circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="100" cy="30" r="12" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="150" cy="45" r="10" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="180" cy="80" r="8" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="160" cy="120" r="10" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="120" cy="100" r="18" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="80" cy="90" r="8" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="30" cy="100" r="12" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="70" cy="130" r="10" fill="none" stroke="white" stroke-width="4"/>
+                    <circle cx="110" cy="70" r="6" fill="none" stroke="white" stroke-width="3"/>
+                    
+                    <!-- Connections -->
+                    <line x1="50" y1="50" x2="100" y2="30" stroke="white" stroke-width="3"/>
+                    <line x1="100" y1="30" x2="150" y2="45" stroke="white" stroke-width="3"/>
+                    <line x1="150" y1="45" x2="180" y2="80" stroke="white" stroke-width="3"/>
+                    <line x1="180" y1="80" x2="160" y2="120" stroke="white" stroke-width="3"/>
+                    <line x1="160" y1="120" x2="120" y2="100" stroke="white" stroke-width="3"/>
+                    <line x1="120" y1="100" x2="80" y2="90" stroke="white" stroke-width="3"/>
+                    <line x1="80" y1="90" x2="50" y2="50" stroke="white" stroke-width="3"/>
+                    <line x1="50" y1="50" x2="30" y2="100" stroke="white" stroke-width="3"/>
+                    <line x1="30" y1="100" x2="70" y2="130" stroke="white" stroke-width="3"/>
+                    <line x1="70" y1="130" x2="120" y2="100" stroke="white" stroke-width="3"/>
+                    <line x1="100" y1="30" x2="110" y2="70" stroke="white" stroke-width="3"/>
+                    <line x1="110" y1="70" x2="120" y2="100" stroke="white" stroke-width="3"/>
+                    <line x1="110" y1="70" x2="80" y2="90" stroke="white" stroke-width="3"/>
+                    <line x1="150" y1="45" x2="120" y2="100" stroke="white" stroke-width="3"/>
+                </svg>
+                <div>
+                    <h1>Immnet AI Interview Coach</h1>
+                </div>
+            </div>
             <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
         </div>
         
         <div class="content">
-            <!-- API Configuration Section -->
-            <div class="config-section" id="configSection">
-                <h4>🌐 Backend Configuration</h4>
-                <p>Enter your backend API URL (Heroku app URL):</p>
-                <input type="url" id="backendUrl" class="config-input" 
-                       placeholder="https://your-app-name.herokuapp.com" 
-                       value="">
-                <button class="config-btn" id="saveConfigBtn">Save & Test Connection</button>
-                <div id="connectionStatus" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-            
             <!-- Upload Section -->
             <div class="upload-section" id="uploadSection">
                 <h3>Prepare Your Interview Materials</h3>
@@ -461,7 +495,7 @@
                         <div class="upload-area" id="uploadArea">
                             <div class="upload-icon">📄</div>
                             <p style="margin-bottom: 10px;"><strong>Click to upload</strong> or drag and drop</p>
-                            <p style="color: #666; font-size: 13px;">PDF, DOC, DOCX files</p>
+                            <p style="color: #332D2D; font-size: 13px;">PDF, DOC, DOCX files</p>
                             <input type="file" id="resume" accept=".pdf,.doc,.docx">
                             <button class="upload-btn" id="uploadBtn">Choose File</button>
                         </div>
@@ -538,21 +572,18 @@ The more detailed, the better!"
     <script>
         class InterviewCoach {
             constructor() {
-                this.baseUrl = localStorage.getItem('backendUrl') || 'http://localhost:5000';
+                // Permanently connected to your Heroku backend
+                this.baseUrl = 'https://your-ai-interview-coach-7f11f441a641.herokuapp.com';
                 this.interviewState = 'not_started';
                 this.sessionId = null;
                 this.resumeFile = null;
                 this.jobDescription = '';
                 this.initializeElements();
                 this.bindEvents();
-                this.loadSavedConfig();
+                this.testInitialConnection();
             }
             
             initializeElements() {
-                this.backendUrlInput = document.getElementById('backendUrl');
-                this.saveConfigBtn = document.getElementById('saveConfigBtn');
-                this.connectionStatus = document.getElementById('connectionStatus');
-                this.configSection = document.getElementById('configSection');
                 this.uploadArea = document.getElementById('uploadArea');
                 this.uploadBtn = document.getElementById('uploadBtn');
                 this.resumeInput = document.getElementById('resume');
@@ -574,22 +605,20 @@ The more detailed, the better!"
                 this.controls = document.getElementById('controls');
             }
             
-            loadSavedConfig() {
-                const savedUrl = localStorage.getItem('backendUrl');
-                if (savedUrl) {
-                    this.backendUrlInput.value = savedUrl;
-                    this.baseUrl = savedUrl;
-                    this.testConnection(false);
+            async testInitialConnection() {
+                try {
+                    const response = await fetch(`${this.baseUrl}/health`);
+                    if (response.ok) {
+                        console.log('Backend connection verified successfully');
+                    } else {
+                        this.updateStatus('Backend service temporarily unavailable. Please try again in a moment.', 'error');
+                    }
+                } catch (error) {
+                    this.updateStatus('Connecting to backend service...', 'loading');
                 }
             }
             
             bindEvents() {
-                // Configuration events
-                this.saveConfigBtn.addEventListener('click', () => this.saveConfiguration());
-                this.backendUrlInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.saveConfiguration();
-                });
-                
                 // File upload events
                 this.uploadBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -643,48 +672,6 @@ The more detailed, the better!"
                 // Control events
                 document.getElementById('newInterviewBtn').addEventListener('click', () => this.startNewInterview());
                 document.getElementById('downloadBtn').addEventListener('click', () => this.downloadSummary());
-            }
-            
-            async saveConfiguration() {
-                const url = this.backendUrlInput.value.trim();
-                if (!url) {
-                    this.updateConnectionStatus('Please enter a valid URL', 'error');
-                    return;
-                }
-                
-                // Ensure URL doesn't end with slash
-                const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url;
-                this.baseUrl = cleanUrl;
-                localStorage.setItem('backendUrl', cleanUrl);
-                
-                await this.testConnection(true);
-            }
-            
-            async testConnection(showSuccess = true) {
-                this.updateConnectionStatus('Testing connection...', 'loading');
-                
-                try {
-                    const response = await fetch(`${this.baseUrl}/health`, {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' }
-                    });
-                    
-                    if (response.ok) {
-                        this.updateConnectionStatus('✅ Connected successfully!', 'success');
-                        if (showSuccess) {
-                            this.configSection.style.display = 'none';
-                        }
-                    } else {
-                        this.updateConnectionStatus('❌ Connection failed', 'error');
-                    }
-                } catch (error) {
-                    this.updateConnectionStatus('❌ Connection error: ' + error.message, 'error');
-                }
-            }
-            
-            updateConnectionStatus(message, type) {
-                this.connectionStatus.textContent = message;
-                this.connectionStatus.className = type;
             }
             
             handleFileSelection(event) {
@@ -785,7 +772,6 @@ The more detailed, the better!"
                     if (response.ok) {
                         this.interviewState = 'active';
                         this.uploadSection.style.display = 'none';
-                        this.configSection.style.display = 'none';
                         this.chatSection.style.display = 'flex';
                         this.addMessage(data.response, 'ai');
                         this.updateStatus('Targeted interview started! Questions are tailored to your background and the job requirements.', 'success');
