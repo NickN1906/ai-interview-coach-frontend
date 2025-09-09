@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AI Interview Coach - Canadian Job Market Preparation</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        /* Upload Section */
+        .upload-section {
+            margin-bottom: 30px;
+        }
+        
+        .upload-section h3 {
+            text-align: center;
+            color: #3276EA;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+        }
+        
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .upload-item {
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-item.completed {
+            border-color: #28a745;
+            background-color: #f8fff9;
+        }
+        
+        .upload-item h4 {
+            color: #3276EA;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        /* Resume Upload */
+        .upload-area {
+            border: 2px dashed #e1e5e9;
+            border-radius: 8px;
+            padding: 30px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: #3276EA;
+            background-color: #f8f9ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #3276EA;
+            background-color: #f0f4ff;
+        }
+        
+        .upload-icon {
+            font-size: 2.5em;
+            color: #3276EA;
+            margin-bottom: 10px;
+        }
+        
+        #resume {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 10px;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .file-selected {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 6px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        /* Job Description */
+        .job-description-textarea {
+            width: 100%;
+            min-height: 150px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .job-description-textarea:focus {
+            outline: none;
+            border-color: #3276EA;
+        }
+        
+        .job-desc-completed {
+            display: none;
+            margin-top: 10px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        /* Start Interview Button */
+        .start-interview-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .start-interview-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20993e 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .start-interview-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        
+        .start-interview-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .requirements-text {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Chat Section */
+        .chat-section {
+            display: none;
+            height: 500px;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            max-height: 400px;
+        }
+        
+        .message {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+        
+        .message.ai {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            margin-right: 60px;
+        }
+        
+        .message.user {
+            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            color: white;
+            margin-left: 60px;
+            text-align: right;
+        }
+        
+        .message .timestamp {
+            font-size: 0.8em;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+        
+        .chat-input-section {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        
+        .chat-input {
+            flex: 1;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 50px;
+            max-height: 120px;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: #3276EA;
+        }
+        
+        .send-btn {
+            background: linear-gradient(135deg, #3276EA 0%, #2565d9 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            height: 50px;
+        }
+        
+        .send-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Status Messages */
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+        
+        .status.loading {
+            background: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+        
+        .status.success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        
+        .status.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+        
+        /* Summary Section */
+        .summary-section {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        .summary-section h3 {
+            color: #3276EA;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .summary-content {
+            white-space: pre-line;
+            line-height: 1.7;
+            color: #444;
+        }
+        
+        /* Control Buttons */
+        .controls {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+        
+        .controls.show {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20993e 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .control-btn.secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        }
+        
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 2s infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        /* API Configuration */
+        .config-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .config-section h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .config-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .config-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { margin: 0; }
+            .header { padding: 20px; }
+            .content { padding: 20px; }
+            .upload-grid { 
+                grid-template-columns: 1fr; 
+                gap: 20px; 
+            }
+            .message.ai { margin-right: 20px; }
+            .message.user { margin-left: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI Interview Coach</h1>
+            <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
+        </div>
+        
+        <div class="content">
+            <!-- API Configuration Section -->
+            <div class="config-section" id="configSection">
+                <h4>🌐 Backend Configuration</h4>
+                <p>Enter your backend API URL (Heroku app URL):</p>
+                <input type="url" id="backendUrl" class="config-input" 
+                       placeholder="https://your-app-name.herokuapp.com" 
+                       value="">
+                <button class="config-btn" id="saveConfigBtn">Save & Test Connection</button>
+                <div id="connectionStatus" style="margin-top: 10px; font-weight: bold;"></div>
+            </div>
+            
+            <!-- Upload Section -->
+            <div class="upload-section" id="uploadSection">
+                <h3>Prepare Your Interview Materials</h3>
+                
+                <div class="upload-grid">
+                    <!-- Resume Upload -->
+                    <div class="upload-item" id="resumeItem">
+                        <h4>1. Upload Your Resume</h4>
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">📄</div>
+                            <p style="margin-bottom: 10px;"><strong>Click to upload</strong> or drag and drop</p>
+                            <p style="color: #666; font-size: 13px;">PDF, DOC, DOCX files</p>
+                            <input type="file" id="resume" accept=".pdf,.doc,.docx">
+                            <button class="upload-btn" id="uploadBtn">Choose File</button>
+                        </div>
+                        <div class="file-selected" id="fileSelected">
+                            ✅ File uploaded: <span id="fileName"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Job Description -->
+                    <div class="upload-item" id="jobDescItem">
+                        <h4>2. Enter Job Description</h4>
+                        <textarea 
+                            id="jobDescription" 
+                            class="job-description-textarea" 
+                            placeholder="Paste the job description here...
+
+Example:
+Software Engineer at Tech Company
+- 3+ years experience in Python/JavaScript
+- Experience with React, Node.js
+- Bachelor's degree in Computer Science
+- Strong problem-solving skills
+- Team collaboration experience
+
+The more detailed, the better!"
+                            required></textarea>
+                        <div class="job-desc-completed" id="jobDescCompleted">
+                            ✅ Job description added
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Start Interview Button -->
+                <div class="start-interview-section">
+                    <button class="start-interview-btn" id="startInterviewBtn" disabled>
+                        Start Targeted Interview Practice
+                    </button>
+                    <p class="requirements-text">
+                        Both resume and job description are required to begin your personalized interview.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Status Messages -->
+            <div id="status"></div>
+            
+            <!-- Chat Section -->
+            <div class="chat-section" id="chatSection">
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-section">
+                    <textarea 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Type your answer here... (or type 'finish' to end the interview)"
+                        rows="2"></textarea>
+                    <button id="sendBtn" class="send-btn">Send</button>
+                </div>
+            </div>
+            
+            <!-- Summary Section -->
+            <div class="summary-section" id="summarySection">
+                <h3>Your Interview Summary & Job Fit Analysis</h3>
+                <div class="summary-content" id="summaryContent"></div>
+            </div>
+            
+            <!-- Control Buttons -->
+            <div class="controls" id="controls">
+                <button class="control-btn" id="newInterviewBtn">Start New Interview</button>
+                <button class="control-btn secondary" id="downloadBtn">Download Summary</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class InterviewCoach {
+            constructor() {
+                this.baseUrl = localStorage.getItem('backendUrl') || 'http://localhost:5000';
+                this.interviewState = 'not_started';
+                this.sessionId = null;
+                this.resumeFile = null;
+                this.jobDescription = '';
+                this.initializeElements();
+                this.bindEvents();
+                this.loadSavedConfig();
+            }
+            
+            initializeElements() {
+                this.backendUrlInput = document.getElementById('backendUrl');
+                this.saveConfigBtn = document.getElementById('saveConfigBtn');
+                this.connectionStatus = document.getElementById('connectionStatus');
+                this.configSection = document.getElementById('configSection');
+                this.uploadArea = document.getElementById('uploadArea');
+                this.uploadBtn = document.getElementById('uploadBtn');
+                this.resumeInput = document.getElementById('resume');
+                this.jobDescriptionInput = document.getElementById('jobDescription');
+                this.startInterviewBtn = document.getElementById('startInterviewBtn');
+                this.resumeItem = document.getElementById('resumeItem');
+                this.jobDescItem = document.getElementById('jobDescItem');
+                this.fileSelected = document.getElementById('fileSelected');
+                this.fileName = document.getElementById('fileName');
+                this.jobDescCompleted = document.getElementById('jobDescCompleted');
+                this.status = document.getElementById('status');
+                this.uploadSection = document.getElementById('uploadSection');
+                this.chatSection = document.getElementById('chatSection');
+                this.chatMessages = document.getElementById('chatMessages');
+                this.chatInput = document.getElementById('chatInput');
+                this.sendBtn = document.getElementById('sendBtn');
+                this.summarySection = document.getElementById('summarySection');
+                this.summaryContent = document.getElementById('summaryContent');
+                this.controls = document.getElementById('controls');
+            }
+            
+            loadSavedConfig() {
+                const savedUrl = localStorage.getItem('backendUrl');
+                if (savedUrl) {
+                    this.backendUrlInput.value = savedUrl;
+                    this.baseUrl = savedUrl;
+                    this.testConnection(false);
+                }
+            }
+            
+            bindEvents() {
+                // Configuration events
+                this.saveConfigBtn.addEventListener('click', () => this.saveConfiguration());
+                this.backendUrlInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.saveConfiguration();
+                });
+                
+                // File upload events
+                this.uploadBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.resumeInput.click();
+                });
+                
+                this.uploadArea.addEventListener('click', (e) => {
+                    if (e.target === this.uploadArea || e.target.classList.contains('upload-icon') || e.target.tagName === 'P') {
+                        e.stopPropagation();
+                        this.resumeInput.click();
+                    }
+                });
+                
+                this.resumeInput.addEventListener('change', (e) => this.handleFileSelection(e));
+                
+                // Job description events
+                this.jobDescriptionInput.addEventListener('input', () => this.handleJobDescriptionChange());
+                
+                // Start interview button
+                this.startInterviewBtn.addEventListener('click', () => this.handleStartInterview());
+                
+                // Drag and drop
+                this.uploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    this.uploadArea.classList.add('dragover');
+                });
+                
+                this.uploadArea.addEventListener('dragleave', () => {
+                    this.uploadArea.classList.remove('dragover');
+                });
+                
+                this.uploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    this.uploadArea.classList.remove('dragover');
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        this.resumeInput.files = files;
+                        this.handleFileSelection({target: {files: files}});
+                    }
+                });
+                
+                // Chat events
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                
+                // Control events
+                document.getElementById('newInterviewBtn').addEventListener('click', () => this.startNewInterview());
+                document.getElementById('downloadBtn').addEventListener('click', () => this.downloadSummary());
+            }
+            
+            async saveConfiguration() {
+                const url = this.backendUrlInput.value.trim();
+                if (!url) {
+                    this.updateConnectionStatus('Please enter a valid URL', 'error');
+                    return;
+                }
+                
+                // Ensure URL doesn't end with slash
+                const cleanUrl = url.endsWith('/') ? url.slice(0, -1) : url;
+                this.baseUrl = cleanUrl;
+                localStorage.setItem('backendUrl', cleanUrl);
+                
+                await this.testConnection(true);
+            }
+            
+            async testConnection(showSuccess = true) {
+                this.updateConnectionStatus('Testing connection...', 'loading');
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/health`, {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        this.updateConnectionStatus('✅ Connected successfully!', 'success');
+                        if (showSuccess) {
+                            this.configSection.style.display = 'none';
+                        }
+                    } else {
+                        this.updateConnectionStatus('❌ Connection failed', 'error');
+                    }
+                } catch (error) {
+                    this.updateConnectionStatus('❌ Connection error: ' + error.message, 'error');
+                }
+            }
+            
+            updateConnectionStatus(message, type) {
+                this.connectionStatus.textContent = message;
+                this.connectionStatus.className = type;
+            }
+            
+            handleFileSelection(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                // Validate file type
+                const fileName = file.name.toLowerCase();
+                const validExtensions = ['.pdf', '.doc', '.docx'];
+                const isValidFile = validExtensions.some(ext => fileName.endsWith(ext));
+                
+                if (!isValidFile) {
+                    this.updateStatus('Please select a PDF, DOC, or DOCX file.', 'error');
+                    return;
+                }
+                
+                this.resumeFile = file;
+                this.fileName.textContent = file.name;
+                this.fileSelected.style.display = 'block';
+                this.resumeItem.classList.add('completed');
+                this.updateStatus('Resume uploaded successfully!', 'success');
+                this.validateInputs();
+            }
+            
+            handleJobDescriptionChange() {
+                const value = this.jobDescriptionInput.value.trim();
+                this.jobDescription = value;
+                
+                if (value.length > 20) {
+                    this.jobDescCompleted.style.display = 'block';
+                    this.jobDescItem.classList.add('completed');
+                    this.updateStatus('Job description added successfully!', 'success');
+                } else {
+                    this.jobDescCompleted.style.display = 'none';
+                    this.jobDescItem.classList.remove('completed');
+                }
+                this.validateInputs();
+            }
+            
+            validateInputs() {
+                const hasFile = this.resumeFile !== null;
+                const hasJobDescription = this.jobDescription.length > 20;
+                
+                this.startInterviewBtn.disabled = !(hasFile && hasJobDescription);
+                
+                if (hasFile && hasJobDescription) {
+                    this.updateStatus('Ready to start your targeted interview practice!', 'success');
+                }
+            }
+            
+            async handleStartInterview() {
+                if (!this.resumeFile || !this.jobDescription) {
+                    this.updateStatus('Please provide both resume and job description.', 'error');
+                    return;
+                }
+                
+                this.updateStatus('Processing resume and job description...', 'loading');
+                this.startInterviewBtn.disabled = true;
+                
+                const formData = new FormData();
+                formData.append('resume', this.resumeFile);
+                formData.append('job_description', this.jobDescription);
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/upload_resume`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        this.sessionId = data.session_id;
+                        this.updateStatus('Resume and job description processed successfully! Starting targeted interview...', 'success');
+                        setTimeout(async () => {
+                            await this.startInterview();
+                        }, 500);
+                    } else {
+                        this.updateStatus(`Error: ${data.error}`, 'error');
+                        this.startInterviewBtn.disabled = false;
+                    }
+                } catch (error) {
+                    this.updateStatus(`Connection Error: ${error.message}`, 'error');
+                    this.startInterviewBtn.disabled = false;
+                }
+            }
+            
+            async startInterview() {
+                try {
+                    const response = await fetch(`${this.baseUrl}/start_interview`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({session_id: this.sessionId})
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        this.interviewState = 'active';
+                        this.uploadSection.style.display = 'none';
+                        this.configSection.style.display = 'none';
+                        this.chatSection.style.display = 'flex';
+                        this.addMessage(data.response, 'ai');
+                        this.updateStatus('Targeted interview started! Questions are tailored to your background and the job requirements.', 'success');
+                        this.chatInput.focus();
+                    } else {
+                        this.updateStatus(`Error: ${data.error}`, 'error');
+                    }
+                } catch (error) {
+                    this.updateStatus(`Failed to start interview: ${error.message}`, 'error');
+                }
+            }
+            
+            async sendMessage() {
+                const message = this.chatInput.value.trim();
+                if (!message || this.sendBtn.disabled) return;
+                
+                this.addMessage(message, 'user');
+                this.chatInput.value = '';
+                this.sendBtn.disabled = true;
+                
+                const typingId = this.addTypingIndicator();
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/chat`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            message: message,
+                            session_id: this.sessionId
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    this.removeTypingIndicator(typingId);
+                    
+                    if (data.should_summarize) {
+                        this.addMessage(data.response, 'ai');
+                        await this.getSummary();
+                    } else if (response.ok) {
+                        this.addMessage(data.response, 'ai');
+                        this.sendBtn.disabled = false;
+                    } else {
+                        this.addMessage(`Error: ${data.error}`, 'ai');
+                        this.sendBtn.disabled = false;
+                    }
+                } catch (error) {
+                    this.removeTypingIndicator(typingId);
+                    this.addMessage(`Connection Error: ${error.message}`, 'ai');
+                    this.sendBtn.disabled = false;
+                }
+            }
+            
+            async getSummary() {
+                this.updateStatus('Generating comprehensive interview summary with job fit analysis...', 'loading');
+                
+                try {
+                    const response = await fetch(`${this.baseUrl}/get_summary`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({session_id: this.sessionId})
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        this.interviewState = 'completed';
+                        this.chatSection.style.display = 'none';
+                        this.summarySection.style.display = 'block';
+                        this.summaryContent.textContent = data.summary;
+                        this.controls.classList.add('show');
+                        this.updateStatus(`Interview completed! ${data.questions_asked} questions answered with detailed job fit analysis.`, 'success');
+                    } else {
+                        this.updateStatus(`Error generating summary: ${data.error}`, 'error');
+                    }
+                } catch (error) {
+                    this.updateStatus(`Failed to generate summary: ${error.message}`, 'error');
+                }
+            }
+            
+            addMessage(content, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                
+                // Format the content to handle sections better
+                let formattedContent = content;
+                if (type === 'ai') {
+                    // Replace section headers with better formatting - only headers in bold
+                    formattedContent = content
+                        .replace(/WELCOME:\s*/g, '<br><strong>WELCOME:</strong><br>')
+                        .replace(/FIRST QUESTION:\s*/g, '<br><strong>FIRST QUESTION:</strong><br>')
+                        .replace(/FEEDBACK:\s*/g, '<br><strong>FEEDBACK:</strong><br>')
+                        .replace(/FOLLOW-UP QUESTION:\s*/g, '<br><strong>FOLLOW-UP QUESTION:</strong><br>')
+                        .replace(/CONTEXT:\s*/g, '<br><strong>CONTEXT:</strong><br>')
+                        .replace(/\n\n/g, '<br><br>')
+                        .replace(/\n/g, '<br>')
+                        .trim();
+                    
+                    // Remove any leading <br> tags
+                    if (formattedContent.startsWith('<br>')) {
+                        formattedContent = formattedContent.substring(4);
+                    }
+                }
+                
+                const timestamp = new Date().toLocaleTimeString();
+                messageDiv.innerHTML = `
+                    <div>${formattedContent}</div>
+                    <div class="timestamp">${timestamp}</div>
+                `;
+                
+                this.chatMessages.appendChild(messageDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                return messageDiv;
+            }
+            
+            addTypingIndicator() {
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message ai typing';
+                typingDiv.innerHTML = '<div>AI Coach is analyzing your response<span class="loading-dots"></span></div>';
+                
+                this.chatMessages.appendChild(typingDiv);
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+                
+                return typingDiv;
+            }
+            
+            removeTypingIndicator(typingElement) {
+                if (typingElement && typingElement.parentNode) {
+                    typingElement.parentNode.removeChild(typingElement);
+                }
+            }
+            
+            updateStatus(message, type) {
+                this.status.innerHTML = `<div class="status ${type}">${message}</div>`;
+            }
+            
+            async startNewInterview() {
+                try {
+                    if (this.sessionId) {
+                        await fetch(`${this.baseUrl}/clear_session`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({session_id: this.sessionId})
+                        });
+                    }
+                    location.reload();
+                } catch (error) {
+                    console.error('Failed to clear session:', error);
+                    location.reload();
+                }
+            }
+            
+            downloadSummary() {
+                const summaryText = this.summaryContent.textContent;
+                const timestamp = new Date().toISOString().slice(0,10);
+                const blob = new Blob([summaryText], {type: 'text/plain'});
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `interview-summary-${timestamp}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new InterviewCoach();
+        });
+    </script>
+</body>
+</html>
