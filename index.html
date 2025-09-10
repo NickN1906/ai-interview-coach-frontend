@@ -54,8 +54,10 @@
             width: 60px;
             height: 60px;
             margin-right: 20px;
-            object-fit: contain; /* Ensures the image scales properly without distortion */
-            background: transparent; /* Remove any background color */;
+            object-fit: contain;
+            background: white;
+            border-radius: 50%;
+            padding: 8px;
         }
         
         .header h1 {
@@ -447,13 +449,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <!-- Replace the existing logo-container section with this: -->
-                <div class="logo-container">
-                    <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
-                    <div>
-                        <h1>Immnet AI Interview Coach</h1>
-                    </div>
-                </div>
+            <div class="logo-container">
+                <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
                 <div>
                     <h1>ImmNet AI Interview Coach</h1>
                 </div>
