@@ -803,9 +803,10 @@ The more detailed, the better!"
             }
             
             async getSummary() {
-                this.updateStatus('Generating comprehensive interview summary with job fit analysis...', 'loading');
+                this.updateStatus('Starting summary generation...', 'loading');
                 
                 try {
+                    // Start the summary generation
                     const response = await fetch(`${this.baseUrl}/get_summary`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -814,19 +815,64 @@ The more detailed, the better!"
                     
                     const data = await response.json();
                     
-                    if (response.ok) {
-                        this.interviewState = 'completed';
-                        this.chatSection.style.display = 'none';
-                        this.summarySection.style.display = 'block';
-                        this.summaryContent.textContent = data.summary;
-                        this.controls.classList.add('show');
-                        this.updateStatus(`Interview completed! ${data.questions_asked} questions answered with detailed job fit analysis.`, 'success');
-                    } else {
-                        this.updateStatus(`Error generating summary: ${data.error}`, 'error');
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to start summary generation');
                     }
+                    
+                    // Start polling for completion
+                    this.pollSummaryStatus();
+                    
                 } catch (error) {
-                    this.updateStatus(`Failed to generate summary: ${error.message}`, 'error');
+                    this.updateStatus(`Failed to start summary generation: ${error.message}`, 'error');
                 }
+            }
+
+            async pollSummaryStatus() {
+                const maxAttempts = 60; // 60 seconds max wait
+                let attempts = 0;
+                
+                const poll = async () => {
+                    try {
+                        attempts++;
+                        
+                        const response = await fetch(`${this.baseUrl}/check_summary_status`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({session_id: this.sessionId})
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.status === 'completed') {
+                            // Summary is ready
+                            this.interviewState = 'completed';
+                            this.chatSection.style.display = 'none';
+                            this.summarySection.style.display = 'block';
+                            this.summaryContent.textContent = data.summary;
+                            this.controls.classList.add('show');
+                            this.updateStatus(`Interview completed! Summary generated successfully.`, 'success');
+                            return;
+                        } else if (data.status === 'failed') {
+                            throw new Error(data.error || 'Summary generation failed');
+                        } else if (data.status === 'generating') {
+                            // Still generating, update status
+                            this.updateStatus(`Generating comprehensive summary... (${attempts}s)`, 'loading');
+                            
+                            if (attempts < maxAttempts) {
+                                // Continue polling
+                                setTimeout(poll, 1000); // Poll every second
+                            } else {
+                                throw new Error('Summary generation timed out');
+                            }
+                        }
+                        
+                    } catch (error) {
+                        this.updateStatus(`Summary generation failed: ${error.message}`, 'error');
+                    }
+                };
+                
+                // Start polling
+                poll();
             }
             
             addMessage(content, type) {
