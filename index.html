@@ -54,7 +54,8 @@
             width: 60px;
             height: 60px;
             margin-right: 20px;
-            fill: white;
+            object-fit: contain; /* Ensures the image scales properly without distortion */
+            background: transparent; /* Remove any background color */;
         }
         
         .header h1 {
@@ -446,38 +447,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo-container">
-                <svg class="network-logo" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Network emblem based on brand guidelines -->
-                    <circle cx="50" cy="50" r="15" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="100" cy="30" r="12" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="150" cy="45" r="10" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="180" cy="80" r="8" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="160" cy="120" r="10" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="120" cy="100" r="18" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="80" cy="90" r="8" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="30" cy="100" r="12" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="70" cy="130" r="10" fill="none" stroke="white" stroke-width="4"/>
-                    <circle cx="110" cy="70" r="6" fill="none" stroke="white" stroke-width="3"/>
-                    
-                    <!-- Connections -->
-                    <line x1="50" y1="50" x2="100" y2="30" stroke="white" stroke-width="3"/>
-                    <line x1="100" y1="30" x2="150" y2="45" stroke="white" stroke-width="3"/>
-                    <line x1="150" y1="45" x2="180" y2="80" stroke="white" stroke-width="3"/>
-                    <line x1="180" y1="80" x2="160" y2="120" stroke="white" stroke-width="3"/>
-                    <line x1="160" y1="120" x2="120" y2="100" stroke="white" stroke-width="3"/>
-                    <line x1="120" y1="100" x2="80" y2="90" stroke="white" stroke-width="3"/>
-                    <line x1="80" y1="90" x2="50" y2="50" stroke="white" stroke-width="3"/>
-                    <line x1="50" y1="50" x2="30" y2="100" stroke="white" stroke-width="3"/>
-                    <line x1="30" y1="100" x2="70" y2="130" stroke="white" stroke-width="3"/>
-                    <line x1="70" y1="130" x2="120" y2="100" stroke="white" stroke-width="3"/>
-                    <line x1="100" y1="30" x2="110" y2="70" stroke="white" stroke-width="3"/>
-                    <line x1="110" y1="70" x2="120" y2="100" stroke="white" stroke-width="3"/>
-                    <line x1="110" y1="70" x2="80" y2="90" stroke="white" stroke-width="3"/>
-                    <line x1="150" y1="45" x2="120" y2="100" stroke="white" stroke-width="3"/>
-                </svg>
+            <!-- Replace the existing logo-container section with this: -->
+                <div class="logo-container">
+                    <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
+                    <div>
+                        <h1>Immnet AI Interview Coach</h1>
+                    </div>
+                </div>
                 <div>
-                    <h1>Immnet AI Interview Coach</h1>
+                    <h1>ImmNet AI Interview Coach</h1>
                 </div>
             </div>
             <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
