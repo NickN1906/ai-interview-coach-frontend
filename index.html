@@ -745,6 +745,7 @@ The more detailed, the better!"
                     
                     if (data.success) {
                         this.sessionId = data.session_id;
+                        console.log('Session ID set to:', this.sessionId);
                         this.updateStatus('Resume and job description processed successfully! Starting targeted interview...', 'success');
                         setTimeout(async () => {
                             await this.startInterview();
@@ -760,6 +761,7 @@ The more detailed, the better!"
             }
             
             async startInterview() {
+                console.log('Starting interview with session ID:', this.sessionId);
                 try {
                     const response = await fetch(`${this.baseUrl}/start_interview`, {
                         method: 'POST',
@@ -785,6 +787,7 @@ The more detailed, the better!"
             }
             
             async sendMessage() {
+                console.log('Sending message with session ID:', this.sessionId);
                 const message = this.chatInput.value.trim();
                 if (!message || this.sendBtn.disabled) return;
                 
@@ -924,7 +927,76 @@ The more detailed, the better!"
                 }
             }
             
-            downloadSummary() {
+            async downloadSummary() {
+                // Show loading state
+                const downloadBtn = document.getElementById('downloadBtn');
+                const originalText = downloadBtn.textContent;
+                downloadBtn.textContent = 'Generating PDF...';
+                downloadBtn.disabled = true;
+                
+                try {
+                    this.updateStatus('Generating professional PDF summary...', 'loading');
+                    
+                    const response = await fetch(`${this.baseUrl}/generate_pdf`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({session_id: this.sessionId})
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        // Convert base64 to blob and download
+                        const pdfBlob = this.base64ToBlob(data.pdf_data, 'application/pdf');
+                        const url = URL.createObjectURL(pdfBlob);
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = data.filename || `interview-summary-${new Date().toISOString().slice(0,10)}.pdf`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        this.updateStatus('PDF downloaded successfully!', 'success');
+                    } else {
+                        throw new Error(data.error || 'Failed to generate PDF');
+                    }
+                } catch (error) {
+                    console.error('PDF generation error:', error);
+                    this.updateStatus(`PDF generation failed: ${error.message}`, 'error');
+                    
+                    // Fallback to text download
+                    this.downloadSummaryAsText();
+                } finally {
+                    // Restore button state
+                    downloadBtn.textContent = originalText;
+                    downloadBtn.disabled = false;
+                }
+            }
+
+            // Add this helper method to convert base64 to blob
+            base64ToBlob(base64Data, contentType = '') {
+                const byteCharacters = atob(base64Data);
+                const byteArrays = [];
+                
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
+                
+                return new Blob(byteArrays, {type: contentType});
+            }
+
+            // Keep the existing text download as fallback
+            downloadSummaryAsText() {
                 const summaryText = this.summaryContent.textContent;
                 const timestamp = new Date().toISOString().slice(0,10);
                 const blob = new Blob([summaryText], {type: 'text/plain'});
