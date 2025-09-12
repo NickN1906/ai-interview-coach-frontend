@@ -540,6 +540,7 @@ The more detailed, the better!"
             <div class="controls" id="controls">
                 <button class="control-btn" id="newInterviewBtn">Start New Interview</button>
                 <button class="control-btn secondary" id="downloadBtn">Download Summary</button>
+                <button class="control-btn secondary" id="downloadTranscriptBtn">Download Transcript</button>
             </div>
         </div>
     </div>
@@ -647,6 +648,7 @@ The more detailed, the better!"
                 // Control events
                 document.getElementById('newInterviewBtn').addEventListener('click', () => this.startNewInterview());
                 document.getElementById('downloadBtn').addEventListener('click', () => this.downloadSummary());
+                document.getElementById('downloadTranscriptBtn').addEventListener('click', () => this.downloadTranscript());
             }
             
             handleFileSelection(event) {
@@ -886,6 +888,65 @@ The more detailed, the better!"
                 this.status.innerHTML = `<div class="status ${type}">${message}</div>`;
             }
             
+            // Add this method to your InterviewCoach class
+
+            async downloadTranscript() {
+                const downloadBtn = document.getElementById('downloadTranscriptBtn');
+                const originalText = downloadBtn.textContent;
+                downloadBtn.textContent = 'Generating Transcript...';
+                downloadBtn.disabled = true;
+                
+                try {
+                    this.updateStatus('Generating interview transcript...', 'loading');
+                    
+                    const response = await fetch(`${this.baseUrl}/download_transcript`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({session_id: this.sessionId})
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        // Create and download the transcript file
+                        const blob = new Blob([data.transcript], {type: 'text/plain'});
+                        const url = URL.createObjectURL(blob);
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = data.filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        
+                        this.updateStatus('Interview transcript downloaded successfully!', 'success');
+                    } else {
+                        throw new Error(data.error || 'Failed to generate transcript');
+                    }
+                    
+                } catch (error) {
+                    console.error('Transcript download error:', error);
+                    this.updateStatus(`Transcript download failed: ${error.message}`, 'error');
+                } finally {
+                    downloadBtn.textContent = originalText;
+                    downloadBtn.disabled = false;
+                }
+            }
+
+            // Update your controls section in the HTML to include the transcript button
+            // Add this to your existing controls div:
+            /*
+            <div class="controls" id="controls">
+                <button class="control-btn" id="newInterviewBtn">Start New Interview</button>
+                <button class="control-btn secondary" id="downloadBtn">Download Summary</button>
+                <button class="control-btn secondary" id="downloadTranscriptBtn">Download Transcript</button>
+            </div>
+            */
+
+            // And add the event listener in your bindEvents method:
+            // document.getElementById('downloadTranscriptBtn').addEventListener('click', () => this.downloadTranscript());
+
             async startNewInterview() {
                 try {
                     if (this.sessionId) {
