@@ -1033,7 +1033,7 @@ The more detailed, the better!"
                     if (hasSubscription) {
                         this.showStatus('This email already has an active subscription! Please use the "Existing User" option to sign in.', 'error');
                         this.signupSubmit.disabled = false;
-                        this.signupSubmit.textContent = 'Start Monthly Subscription';
+                        this.selectPlan(this.selectedPlan); // Reset button text
                         
                         // Optionally, highlight the existing user option
                         setTimeout(() => {
@@ -1050,6 +1050,7 @@ The more detailed, the better!"
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
                             customer_email: email,
+                            plan_type: this.selectedPlan,
                             success_url: window.location.href + '?success=true&email=' + encodeURIComponent(email),
                             cancel_url: window.location.href
                         })
@@ -1066,7 +1067,7 @@ The more detailed, the better!"
                 } catch (error) {
                     this.showStatus('Payment setup failed. Please try again.', 'error');
                     this.signupSubmit.disabled = false;
-                    this.signupSubmit.textContent = 'Start Monthly Subscription';
+                    this.selectPlan(this.selectedPlan); // Reset button text
                 }
             }
             
