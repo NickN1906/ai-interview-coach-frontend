@@ -705,7 +705,7 @@ The more detailed, the better!"
 
     <script>
         // Initialize Stripe (replace with your publishable key)
-        const stripe = Stripe('pk_live_51QZxlpDHULmPlPc5llWlN2yiQD1xgDena3OX3IlBHiXP2UCYUUNd74akCBD0sj5KO6BqMbNo5XpCB4Ms0hR3Yttb00OyXINLV8'); // Replace with your actual key
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE'); // Replace with your actual key
         
         class InterviewCoach {
             constructor() {
@@ -834,8 +834,8 @@ The more detailed, the better!"
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
                             customer_email: this.customerEmail,
-                            success_url: window.location.origin + window.location.pathname + '?success=true&email=' + encodeURIComponent(this.customerEmail),
-                            cancel_url: window.location.origin + window.location.pathname
+                            success_url: window.location.href + '?success=true&email=' + encodeURIComponent(this.customerEmail),
+                            cancel_url: window.location.href
                         })
                     });
                     
@@ -859,6 +859,8 @@ The more detailed, the better!"
             async checkSubscriptionStatus() {
                 if (!this.customerEmail) return;
                 
+                console.log('Checking subscription for:', this.customerEmail);
+                
                 try {
                     const response = await fetch(`${this.baseUrl}/subscription-status`, {
                         method: 'POST',
@@ -867,12 +869,15 @@ The more detailed, the better!"
                     });
                     
                     const data = await response.json();
+                    console.log('Subscription status response:', data);
                     
                     if (data.has_active_subscription) {
+                        console.log('User has active subscription - showing upload section');
                         this.hasActiveSubscription = true;
                         this.showSubscriptionSuccess(data.subscription_info);
                         this.showUploadSection();
                     } else {
+                        console.log('User has no active subscription - showing paywall');
                         this.hasActiveSubscription = false;
                         this.showSubscriptionRequired();
                     }
