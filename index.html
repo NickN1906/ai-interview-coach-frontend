@@ -81,57 +81,188 @@
             overflow-y: auto;
         }
 
-        /* Subscription Section */
-        .subscription-section {
+        /* Welcome Screen */
+        .welcome-screen {
             text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 30px;
-            background: linear-gradient(135deg, #FFF9F5 0%, #FFE8E8 100%);
-            border-radius: 12px;
-            border: 2px solid #DB1818;
+            padding: 40px 20px;
         }
 
-        .subscription-section h2 {
+        .welcome-screen h2 {
             color: #DB1818;
             font-size: 2em;
             font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .auth-options {
+            display: flex;
+            gap: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .auth-option {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            border: 3px solid #DB1818;
+            border-radius: 12px;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .auth-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(219, 24, 24, 0.2);
+        }
+
+        .auth-option.login {
+            border-color: #28a745;
+        }
+
+        .auth-option.login:hover {
+            border-color: #20c997;
+            box-shadow: 0 10px 30px rgba(40, 167, 69, 0.2);
+        }
+
+        .auth-option h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .auth-option p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .auth-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .login-option-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .signup-option-btn {
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
+            color: white;
+        }
+
+        /* Login Form */
+        .login-form, .signup-form {
+            display: none;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .login-form h2, .signup-form h2 {
+            color: #DB1818;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #DB1818;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8A0F0F;
+            box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
             margin-bottom: 20px;
         }
 
-        .pricing-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 400px;
-            margin: 0 auto 30px;
-            box-shadow: 0 8px 25px rgba(219, 24, 24, 0.1);
+        .login-btn-submit {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .signup-btn-submit {
+            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
+            color: white;
+        }
+
+        .form-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: #DB1818;
+        }
+
+        /* Pricing Card for Signup */
+        .pricing-info {
+            background: #FFF9F5;
             border: 1px solid #DB1818;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
         }
 
         .price {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: 900;
             color: #DB1818;
-            margin-bottom: 10px;
+            text-align: center;
         }
 
         .price-period {
+            text-align: center;
             color: #666;
-            font-size: 1.1em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .features {
             list-style: none;
-            margin: 20px 0 30px;
-            text-align: left;
+            padding: 0;
         }
 
         .features li {
-            padding: 8px 0;
+            padding: 5px 0;
             color: #333;
             position: relative;
-            padding-left: 25px;
+            padding-left: 20px;
+            font-size: 14px;
         }
 
         .features li::before {
@@ -142,73 +273,15 @@
             font-weight: bold;
         }
 
-        .subscribe-btn {
-            background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-family: 'Lato', sans-serif;
-        }
-
-        .subscribe-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(219, 24, 24, 0.4);
-        }
-
-        .subscribe-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .email-input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #DB1818;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            font-family: 'Lato', sans-serif;
-        }
-
-        .email-input:focus {
-            outline: none;
-            border-color: #8A0F0F;
-            box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
-        }
-
-        .subscription-status {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-        }
-
-        .subscription-expired {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
-        }
-        
         /* Upload Section */
         .upload-section {
-            margin-bottom: 30px;
-            display: none; /* Hidden by default until subscription verified */
+            display: none;
         }
-        
-        .upload-section.active {
+
+        .upload-section.show {
             display: block;
         }
-        
+
         .upload-section h3 {
             text-align: center;
             color: #DB1818;
@@ -216,14 +289,14 @@
             font-size: 1.5em;
             font-weight: 700;
         }
-        
+
         .upload-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
-        
+
         .upload-item {
             border: 2px solid #FFF9F5;
             border-radius: 12px;
@@ -231,21 +304,20 @@
             transition: all 0.3s ease;
             background: #FFF9F5;
         }
-        
+
         .upload-item.completed {
             border-color: #DB1818;
             background-color: white;
             box-shadow: 0 4px 15px rgba(219, 24, 24, 0.1);
         }
-        
+
         .upload-item h4 {
             color: #DB1818;
             margin-bottom: 15px;
             font-size: 1.2em;
             font-weight: 700;
         }
-        
-        /* Resume Upload */
+
         .upload-area {
             border: 2px dashed #DB1818;
             border-radius: 8px;
@@ -255,27 +327,27 @@
             transition: all 0.3s ease;
             background: white;
         }
-        
+
         .upload-area:hover {
             border-color: #8A0F0F;
             background-color: #FFF9F5;
         }
-        
+
         .upload-area.dragover {
             border-color: #8A0F0F;
             background-color: #FFF9F5;
         }
-        
+
         .upload-icon {
             font-size: 2.5em;
             color: #DB1818;
             margin-bottom: 10px;
         }
-        
+
         #resume {
             display: none;
         }
-        
+
         .upload-btn {
             background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
@@ -289,12 +361,12 @@
             margin-top: 10px;
             font-family: 'Lato', sans-serif;
         }
-        
+
         .upload-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(219, 24, 24, 0.3);
         }
-        
+
         .file-selected {
             display: none;
             margin-top: 15px;
@@ -305,8 +377,7 @@
             font-weight: 500;
             border: 1px solid #DB1818;
         }
-        
-        /* Job Description */
+
         .job-description-textarea {
             width: 100%;
             min-height: 150px;
@@ -319,26 +390,25 @@
             transition: border-color 0.3s ease;
             background: white;
         }
-        
+
         .job-description-textarea:focus {
             outline: none;
             border-color: #8A0F0F;
             box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
         }
-        
+
         .job-desc-completed {
             display: none;
             margin-top: 10px;
             color: #DB1818;
             font-weight: 600;
         }
-        
-        /* Start Interview Button */
+
         .start-interview-section {
             text-align: center;
             margin-top: 30px;
         }
-        
+
         .start-interview-btn {
             background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
@@ -352,12 +422,12 @@
             box-shadow: 0 4px 15px rgba(219, 24, 24, 0.3);
             font-family: 'Lato', sans-serif;
         }
-        
+
         .start-interview-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(219, 24, 24, 0.4);
         }
-        
+
         .start-interview-btn:disabled {
             background: #332D2D;
             cursor: not-allowed;
@@ -365,20 +435,20 @@
             box-shadow: none;
             opacity: 0.6;
         }
-        
+
         .requirements-text {
             margin-top: 15px;
             color: #332D2D;
             font-size: 14px;
         }
-        
+
         /* Chat Section */
         .chat-section {
             display: none;
             height: 500px;
             flex-direction: column;
         }
-        
+
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -389,40 +459,40 @@
             max-height: 400px;
             border: 1px solid #DB1818;
         }
-        
+
         .message {
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 12px;
             line-height: 1.6;
         }
-        
+
         .message.ai {
             background: white;
             margin-right: 60px;
             border: 1px solid #DB1818;
             color: #332D2D;
         }
-        
+
         .message.user {
             background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
             margin-left: 60px;
             text-align: right;
         }
-        
+
         .message .timestamp {
             font-size: 0.8em;
             opacity: 0.7;
             margin-top: 8px;
         }
-        
+
         .chat-input-section {
             display: flex;
             gap: 10px;
             align-items: flex-end;
         }
-        
+
         .chat-input {
             flex: 1;
             border: 2px solid #DB1818;
@@ -434,13 +504,13 @@
             max-height: 120px;
             font-family: 'Lato', sans-serif;
         }
-        
+
         .chat-input:focus {
             outline: none;
             border-color: #8A0F0F;
             box-shadow: 0 0 0 3px rgba(219, 24, 24, 0.1);
         }
-        
+
         .send-btn {
             background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
@@ -452,39 +522,13 @@
             height: 50px;
             font-family: 'Lato', sans-serif;
         }
-        
+
         .send-btn:disabled {
             background: #332D2D;
             cursor: not-allowed;
             opacity: 0.6;
         }
-        
-        /* Status Messages */
-        .status {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: 500;
-        }
-        
-        .status.loading {
-            background: #FFF9F5;
-            color: #DB1818;
-            border: 1px solid #DB1818;
-        }
-        
-        .status.success {
-            background: #FFF9F5;
-            color: #DB1818;
-            border: 1px solid #DB1818;
-        }
-        
-        .status.error {
-            background: #FF1C1C;
-            color: white;
-            border: 1px solid #8A0F0F;
-        }
-        
+
         /* Summary Section */
         .summary-section {
             display: none;
@@ -494,20 +538,20 @@
             margin-top: 20px;
             border: 2px solid #DB1818;
         }
-        
+
         .summary-section h3 {
             color: #DB1818;
             margin-bottom: 15px;
             font-size: 1.4em;
             font-weight: 700;
         }
-        
+
         .summary-content {
             white-space: pre-line;
             line-height: 1.7;
             color: #332D2D;
         }
-        
+
         /* Control Buttons */
         .controls {
             display: none;
@@ -515,12 +559,12 @@
             margin-top: 20px;
             gap: 15px;
         }
-        
+
         .controls.show {
             display: flex;
             justify-content: center;
         }
-        
+
         .control-btn {
             background: linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%);
             color: white;
@@ -531,43 +575,80 @@
             font-weight: 600;
             font-family: 'Lato', sans-serif;
         }
-        
+
         .control-btn.secondary {
             background: linear-gradient(135deg, #332D2D 0%, #8A0F0F 100%);
         }
-        
+
+        /* Status Messages */
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
         /* Loading Animation */
         .loading-dots {
             display: inline-block;
         }
-        
+
         .loading-dots::after {
             content: '';
             animation: dots 2s infinite;
         }
-        
+
         @keyframes dots {
             0%, 20% { content: ''; }
             40% { content: '.'; }
             60% { content: '..'; }
             80%, 100% { content: '...'; }
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             body { padding: 10px; }
             .container { margin: 0; }
             .header { padding: 20px; }
             .content { padding: 20px; }
-            .upload-grid { 
-                grid-template-columns: 1fr; 
-                gap: 20px; 
+            
+            .auth-options {
+                flex-direction: column;
+                gap: 20px;
             }
+            
+            .auth-option {
+                min-width: auto;
+            }
+            
+            .upload-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
             .message.ai { margin-right: 20px; }
             .message.user { margin-left: 20px; }
             .logo-container { flex-direction: column; }
             .network-logo { margin-right: 0; margin-bottom: 10px; }
-            .pricing-card { margin: 0 0 20px; }
         }
     </style>
 </head>
@@ -584,45 +665,56 @@
         </div>
         
         <div class="content">
-            <!-- Subscription Section -->
-            <div class="subscription-section" id="subscriptionSection">
-                <h2>Access Premium Interview Coaching</h2>
-                
-                <div class="pricing-card">
+            <!-- Welcome Screen -->
+            <div class="welcome-screen" id="welcomeScreen">
+                <h2>Welcome to Immnet AI Interview Coach</h2>
+                <div class="auth-options">
+                    <div class="auth-option login" id="loginOption">
+                        <h3>🔑 Existing User</h3>
+                        <p>Already have a subscription? Access your account</p>
+                        <button class="auth-btn login-option-btn">Sign In</button>
+                    </div>
+                    <div class="auth-option signup" id="signupOption">
+                        <h3>✨ New User</h3>
+                        <p>Start your monthly subscription for premium coaching</p>
+                        <button class="auth-btn signup-option-btn">Get Started</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="login-form" id="loginForm">
+                <h2>Welcome Back!</h2>
+                <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email address" required>
+                <button class="form-btn login-btn-submit" id="loginSubmit">Access My Account</button>
+                <a class="back-link" id="backToWelcome">← Back to options</a>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="signup-form" id="signupForm">
+                <h2>Start Your Subscription</h2>
+                <div class="pricing-info">
                     <div class="price">$29</div>
                     <div class="price-period">per month</div>
-                    
                     <ul class="features">
-                        <li>Unlimited AI-powered mock interviews</li>
+                        <li>Unlimited AI-powered interviews</li>
                         <li>Personalized feedback based on your resume</li>
-                        <li>Canadian workplace culture insights</li>
-                        <li>Detailed performance reports with scores</li>
-                        <li>Industry-specific interview questions</li>
-                        <li>Professional interview summaries (PDF)</li>
+                        <li>Canadian workplace insights</li>
+                        <li>Detailed performance reports</li>
+                        <li>Professional summaries (PDF)</li>
                         <li>Interview transcripts for review</li>
                     </ul>
-                    
-                    <input 
-                        type="email" 
-                        id="customerEmail" 
-                        class="email-input" 
-                        placeholder="Enter your email address"
-                        required>
-                    
-                    <button id="subscribeBtn" class="subscribe-btn">
-                        Start Your Subscription
-                    </button>
                 </div>
-                
-                <div id="subscriptionStatus" style="display: none;"></div>
+                <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address" required>
+                <button class="form-btn signup-btn-submit" id="signupSubmit">Start Monthly Subscription</button>
+                <a class="back-link" id="backToWelcomeFromSignup">← Back to options</a>
             </div>
-            
+
             <!-- Upload Section -->
             <div class="upload-section" id="uploadSection">
                 <h3>Prepare Your Interview Materials</h3>
                 
                 <div class="upload-grid">
-                    <!-- Resume Upload -->
                     <div class="upload-item" id="resumeItem">
                         <h4>1. Upload Your Resume</h4>
                         <div class="upload-area" id="uploadArea">
@@ -637,7 +729,6 @@
                         </div>
                     </div>
                     
-                    <!-- Job Description -->
                     <div class="upload-item" id="jobDescItem">
                         <h4>2. Enter Job Description</h4>
                         <textarea 
@@ -661,7 +752,6 @@ The more detailed, the better!"
                     </div>
                 </div>
                 
-                <!-- Start Interview Button -->
                 <div class="start-interview-section">
                     <button class="start-interview-btn" id="startInterviewBtn" disabled>
                         Start Targeted Interview Practice
@@ -705,7 +795,7 @@ The more detailed, the better!"
 
     <script>
         // Initialize Stripe (replace with your publishable key)
-        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE'); // Replace with your actual key
+        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE');
         
         class InterviewCoach {
             constructor() {
@@ -716,19 +806,31 @@ The more detailed, the better!"
                 this.jobDescription = '';
                 this.customerEmail = '';
                 this.hasActiveSubscription = false;
+                
                 this.initializeElements();
                 this.bindEvents();
                 this.checkInitialState();
             }
             
             initializeElements() {
-                // Subscription elements
-                this.subscriptionSection = document.getElementById('subscriptionSection');
-                this.customerEmailInput = document.getElementById('customerEmail');
-                this.subscribeBtn = document.getElementById('subscribeBtn');
-                this.subscriptionStatus = document.getElementById('subscriptionStatus');
+                // Welcome screen elements
+                this.welcomeScreen = document.getElementById('welcomeScreen');
+                this.loginForm = document.getElementById('loginForm');
+                this.signupForm = document.getElementById('signupForm');
+                this.uploadSection = document.getElementById('uploadSection');
+                this.status = document.getElementById('status');
                 
-                // Existing elements
+                this.loginOption = document.getElementById('loginOption');
+                this.signupOption = document.getElementById('signupOption');
+                this.backToWelcome = document.getElementById('backToWelcome');
+                this.backToWelcomeFromSignup = document.getElementById('backToWelcomeFromSignup');
+                
+                this.loginEmail = document.getElementById('loginEmail');
+                this.loginSubmit = document.getElementById('loginSubmit');
+                this.signupEmail = document.getElementById('signupEmail');
+                this.signupSubmit = document.getElementById('signupSubmit');
+                
+                // Upload elements
                 this.uploadArea = document.getElementById('uploadArea');
                 this.uploadBtn = document.getElementById('uploadBtn');
                 this.resumeInput = document.getElementById('resume');
@@ -739,35 +841,31 @@ The more detailed, the better!"
                 this.fileSelected = document.getElementById('fileSelected');
                 this.fileName = document.getElementById('fileName');
                 this.jobDescCompleted = document.getElementById('jobDescCompleted');
-                this.status = document.getElementById('status');
-                this.uploadSection = document.getElementById('uploadSection');
+                
+                // Chat elements
                 this.chatSection = document.getElementById('chatSection');
                 this.chatMessages = document.getElementById('chatMessages');
                 this.chatInput = document.getElementById('chatInput');
                 this.sendBtn = document.getElementById('sendBtn');
+                
+                // Summary elements
                 this.summarySection = document.getElementById('summarySection');
                 this.summaryContent = document.getElementById('summaryContent');
                 this.controls = document.getElementById('controls');
             }
             
-            async checkInitialState() {
-                // Check if user has email stored and subscription
-                const storedEmail = localStorage.getItem('customerEmail');
-                if (storedEmail) {
-                    this.customerEmailInput.value = storedEmail;
-                    this.customerEmail = storedEmail;
-                    await this.checkSubscriptionStatus();
-                }
-            }
-            
             bindEvents() {
-                // Subscription events
-                this.subscribeBtn.addEventListener('click', () => this.handleSubscription());
-                this.customerEmailInput.addEventListener('input', () => {
-                    this.customerEmail = this.customerEmailInput.value.trim();
-                });
+                // Navigation
+                this.loginOption.addEventListener('click', () => this.showLoginForm());
+                this.signupOption.addEventListener('click', () => this.showSignupForm());
+                this.backToWelcome.addEventListener('click', () => this.showWelcomeScreen());
+                this.backToWelcomeFromSignup.addEventListener('click', () => this.showWelcomeScreen());
                 
-                // Existing events
+                // Form submissions
+                this.loginSubmit.addEventListener('click', () => this.handleLogin());
+                this.signupSubmit.addEventListener('click', () => this.handleSignup());
+                
+                // Upload events
                 this.uploadBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     this.resumeInput.click();
@@ -817,46 +915,125 @@ The more detailed, the better!"
                 document.getElementById('newInterviewBtn').addEventListener('click', () => this.startNewInterview());
                 document.getElementById('downloadBtn').addEventListener('click', () => this.downloadSummary());
                 document.getElementById('downloadTranscriptBtn').addEventListener('click', () => this.downloadTranscript());
+                
+                // Enter key support
+                this.loginEmail.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleLogin();
+                });
+                this.signupEmail.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleSignup();
+                });
             }
             
-            async handleSubscription() {
-                if (!this.customerEmail || !this.isValidEmail(this.customerEmail)) {
-                    this.updateStatus('Please enter a valid email address.', 'error');
+            showWelcomeScreen() {
+                this.welcomeScreen.style.display = 'block';
+                this.loginForm.style.display = 'none';
+                this.signupForm.style.display = 'none';
+                this.uploadSection.classList.remove('show');
+                this.clearStatus();
+            }
+            
+            showLoginForm() {
+                this.welcomeScreen.style.display = 'none';
+                this.loginForm.style.display = 'block';
+                this.signupForm.style.display = 'none';
+                this.loginEmail.focus();
+            }
+            
+            showSignupForm() {
+                this.welcomeScreen.style.display = 'none';
+                this.loginForm.style.display = 'none';
+                this.signupForm.style.display = 'block';
+                this.signupEmail.focus();
+            }
+            
+            showUploadSection() {
+                this.welcomeScreen.style.display = 'none';
+                this.loginForm.style.display = 'none';
+                this.signupForm.style.display = 'none';
+                this.uploadSection.classList.add('show');
+            }
+            
+            async checkInitialState() {
+                const storedEmail = localStorage.getItem('customerEmail');
+                const urlParams = new URLSearchParams(window.location.search);
+                const success = urlParams.get('success');
+                const emailParam = urlParams.get('email');
+                
+                // Handle post-payment redirect
+                if (success === 'true' && emailParam) {
+                    this.customerEmail = decodeURIComponent(emailParam);
+                    localStorage.setItem('customerEmail', this.customerEmail);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    this.hasActiveSubscription = true;
+                    this.showUploadSection();
+                    this.showStatus('Payment successful! Welcome to Immnet AI Interview Coach!', 'success');
                     return;
                 }
                 
-                // Double-check subscription status before creating checkout
-                this.subscribeBtn.disabled = true;
-                this.subscribeBtn.textContent = 'Verifying subscription...';
+                // Check stored email
+                if (storedEmail) {
+                    this.customerEmail = storedEmail;
+                    const hasSubscription = await this.checkSubscriptionStatus(storedEmail);
+                    if (hasSubscription) {
+                        this.hasActiveSubscription = true;
+                        this.showUploadSection();
+                        this.showStatus('Welcome back! Your subscription is active.', 'success');
+                        return;
+                    } else {
+                        localStorage.removeItem('customerEmail');
+                    }
+                }
+                
+                this.showWelcomeScreen();
+            }
+            
+            async handleLogin() {
+                const email = this.loginEmail.value.trim();
+                if (!this.isValidEmail(email)) {
+                    this.showStatus('Please enter a valid email address.', 'error');
+                    return;
+                }
+                
+                this.loginSubmit.disabled = true;
+                this.loginSubmit.textContent = 'Checking...';
                 
                 try {
-                    const statusResponse = await fetch(`${this.baseUrl}/subscription-status`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({customer_email: this.customerEmail})
-                    });
-                    
-                    const statusData = await statusResponse.json();
-                    
-                    if (statusData.has_active_subscription) {
-                        // User already has subscription - don't charge again
+                    const hasSubscription = await this.checkSubscriptionStatus(email);
+                    if (hasSubscription) {
+                        this.customerEmail = email;
                         this.hasActiveSubscription = true;
-                        this.showSubscriptionSuccess(statusData.subscription_info);
+                        localStorage.setItem('customerEmail', email);
                         this.showUploadSection();
-                        localStorage.setItem('customerEmail', this.customerEmail);
-                        this.updateStatus('Welcome back! Your subscription is already active.', 'success');
-                        return;
+                        this.showStatus('Welcome back! Access granted.', 'success');
+                    } else {
+                        this.showStatus('No active subscription found for this email.', 'error');
                     }
-                    
-                    // Proceed with new subscription
-                    this.subscribeBtn.textContent = 'Creating checkout...';
-                    
+                } catch (error) {
+                    this.showStatus('Login failed. Please try again.', 'error');
+                } finally {
+                    this.loginSubmit.disabled = false;
+                    this.loginSubmit.textContent = 'Access My Account';
+                }
+            }
+            
+            async handleSignup() {
+                const email = this.signupEmail.value.trim();
+                if (!this.isValidEmail(email)) {
+                    this.showStatus('Please enter a valid email address.', 'error');
+                    return;
+                }
+                
+                this.signupSubmit.disabled = true;
+                this.signupSubmit.textContent = 'Processing...';
+                
+                try {
                     const response = await fetch(`${this.baseUrl}/create-checkout-session`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({
-                            customer_email: this.customerEmail,
-                            success_url: window.location.href + '?success=true&email=' + encodeURIComponent(this.customerEmail),
+                            customer_email: email,
+                            success_url: window.location.href + '?success=true&email=' + encodeURIComponent(email),
                             cancel_url: window.location.href
                         })
                     });
@@ -864,109 +1041,41 @@ The more detailed, the better!"
                     const data = await response.json();
                     
                     if (data.checkout_url) {
-                        // Store email for when user returns
-                        localStorage.setItem('customerEmail', this.customerEmail);
-                        // Redirect to Stripe Checkout
+                        localStorage.setItem('customerEmail', email);
                         window.location.href = data.checkout_url;
                     } else {
                         throw new Error(data.error || 'Failed to create checkout session');
                     }
                 } catch (error) {
-                    this.updateStatus(`Payment setup failed: ${error.message}`, 'error');
-                    this.showSubscribeButton();
+                    this.showStatus('Payment setup failed. Please try again.', 'error');
+                    this.signupSubmit.disabled = false;
+                    this.signupSubmit.textContent = 'Start Monthly Subscription';
                 }
             }
             
-            async checkSubscriptionStatus() {
-                if (!this.customerEmail) return;
-                
-                console.log('Checking subscription for:', this.customerEmail);
-                
+            async checkSubscriptionStatus(email) {
                 try {
                     const response = await fetch(`${this.baseUrl}/subscription-status`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({customer_email: this.customerEmail})
+                        body: JSON.stringify({customer_email: email})
                     });
                     
                     const data = await response.json();
-                    console.log('Subscription status response:', data);
-                    
-                    if (data.has_active_subscription) {
-                        console.log('User has active subscription - showing upload section');
-                        this.hasActiveSubscription = true;
-                        this.showSubscriptionSuccess(data.subscription_info);
-                        this.showUploadSection();
-                    } else {
-                        console.log('User has no active subscription - showing paywall');
-                        this.hasActiveSubscription = false;
-                        this.showSubscriptionRequired();
-                    }
+                    return data.has_active_subscription;
                 } catch (error) {
                     console.error('Failed to check subscription:', error);
-                    this.showSubscriptionRequired();
-                }
-            }
-            
-            showSubscriptionSuccess(subscriptionInfo) {
-                this.subscriptionSection.style.display = 'none';
-                this.subscriptionStatus.innerHTML = `
-                    <div class="subscription-status">
-                        ✅ Active Subscription - Welcome back! Your subscription is active.
-                    </div>
-                `;
-                this.subscriptionStatus.style.display = 'block';
-            }
-            
-            showSubscriptionRequired() {
-                this.subscriptionSection.style.display = 'block';
-                this.uploadSection.classList.remove('active');
-            }
-            
-            showUploadSection() {
-                this.uploadSection.classList.add('active');
-            }
-            
-            isValidEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-            
-            // Check URL parameters on page load
-            checkUrlParameters() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const success = urlParams.get('success');
-                const email = urlParams.get('email');
-                
-                if (success === 'true' && email) {
-                    this.customerEmail = decodeURIComponent(email);
-                    this.customerEmailInput.value = this.customerEmail;
-                    localStorage.setItem('customerEmail', this.customerEmail);
-                    
-                    // Clear URL parameters
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    // Check subscription status
-                    this.checkSubscriptionStatus();
-                    this.updateStatus('Payment successful! Welcome to Immnet AI Interview Coach!', 'success');
+                    return false;
                 }
             }
             
             handleFileSelection(event) {
-                if (!this.hasActiveSubscription) {
-                    this.updateStatus('Please subscribe first to upload your resume.', 'error');
-                    return;
-                }
-                
                 const file = event.target.files[0];
                 if (!file) return;
                 
-                // Validate file type
                 const fileName = file.name.toLowerCase();
-                const validExtensions = ['.pdf', '.doc', '.docx'];
-                const isValidFile = validExtensions.some(ext => fileName.endsWith(ext));
-                
-                if (!isValidFile) {
-                    this.updateStatus('Please select a PDF, DOC, or DOCX file.', 'error');
+                if (!fileName.endsWith('.pdf') && !fileName.endsWith('.doc') && !fileName.endsWith('.docx')) {
+                    this.showStatus('Please select a PDF, DOC, or DOCX file.', 'error');
                     return;
                 }
                 
@@ -974,7 +1083,7 @@ The more detailed, the better!"
                 this.fileName.textContent = file.name;
                 this.fileSelected.style.display = 'block';
                 this.resumeItem.classList.add('completed');
-                this.updateStatus('Resume uploaded successfully!', 'success');
+                this.showStatus('Resume uploaded successfully!', 'success');
                 this.validateInputs();
             }
             
@@ -985,7 +1094,7 @@ The more detailed, the better!"
                 if (value.length > 20) {
                     this.jobDescCompleted.style.display = 'block';
                     this.jobDescItem.classList.add('completed');
-                    this.updateStatus('Job description added successfully!', 'success');
+                    this.showStatus('Job description added successfully!', 'success');
                 } else {
                     this.jobDescCompleted.style.display = 'none';
                     this.jobDescItem.classList.remove('completed');
@@ -996,26 +1105,25 @@ The more detailed, the better!"
             validateInputs() {
                 const hasFile = this.resumeFile !== null;
                 const hasJobDescription = this.jobDescription.length > 20;
-                
                 this.startInterviewBtn.disabled = !(hasFile && hasJobDescription && this.hasActiveSubscription);
                 
                 if (hasFile && hasJobDescription && this.hasActiveSubscription) {
-                    this.updateStatus('Ready to start your targeted interview practice!', 'success');
+                    this.showStatus('Ready to start your targeted interview practice!', 'success');
                 }
             }
             
             async handleStartInterview() {
                 if (!this.resumeFile || !this.jobDescription) {
-                    this.updateStatus('Please provide both resume and job description.', 'error');
+                    this.showStatus('Please provide both resume and job description.', 'error');
                     return;
                 }
                 
                 if (!this.hasActiveSubscription) {
-                    this.updateStatus('Active subscription required to start interview.', 'error');
+                    this.showStatus('Active subscription required to start interview.', 'error');
                     return;
                 }
                 
-                this.updateStatus('Processing resume and job description...', 'loading');
+                this.showStatus('Processing resume and job description...', 'loading');
                 this.startInterviewBtn.disabled = true;
                 
                 const formData = new FormData();
@@ -1032,33 +1140,30 @@ The more detailed, the better!"
                     const data = await response.json();
                     
                     if (response.status === 402) {
-                        // Subscription required
                         this.hasActiveSubscription = false;
-                        this.showSubscriptionRequired();
-                        this.updateStatus('Your subscription has expired. Please renew to continue.', 'error');
+                        this.showWelcomeScreen();
+                        this.showStatus('Your subscription has expired. Please renew to continue.', 'error');
                         this.startInterviewBtn.disabled = false;
                         return;
                     }
                     
                     if (data.success) {
                         this.sessionId = data.session_id;
-                        console.log('Session ID set to:', this.sessionId);
-                        this.updateStatus('Resume and job description processed successfully! Starting targeted interview...', 'success');
+                        this.showStatus('Resume and job description processed successfully! Starting targeted interview...', 'success');
                         setTimeout(async () => {
                             await this.startInterview();
                         }, 500);
                     } else {
-                        this.updateStatus(`Error: ${data.error}`, 'error');
+                        this.showStatus(`Error: ${data.error}`, 'error');
                         this.startInterviewBtn.disabled = false;
                     }
                 } catch (error) {
-                    this.updateStatus(`Connection Error: ${error.message}`, 'error');
+                    this.showStatus(`Connection Error: ${error.message}`, 'error');
                     this.startInterviewBtn.disabled = false;
                 }
             }
             
             async startInterview() {
-                console.log('Starting interview with session ID:', this.sessionId);
                 try {
                     const response = await fetch(`${this.baseUrl}/start_interview`, {
                         method: 'POST',
@@ -1069,31 +1174,28 @@ The more detailed, the better!"
                     const data = await response.json();
                     
                     if (response.status === 402) {
-                        // Subscription required
                         this.hasActiveSubscription = false;
-                        this.showSubscriptionRequired();
-                        this.updateStatus('Your subscription has expired. Please renew to continue.', 'error');
+                        this.showWelcomeScreen();
+                        this.showStatus('Your subscription has expired. Please renew to continue.', 'error');
                         return;
                     }
                     
                     if (response.ok) {
                         this.interviewState = 'active';
                         this.uploadSection.style.display = 'none';
-                        this.subscriptionStatus.style.display = 'none';
                         this.chatSection.style.display = 'flex';
                         this.addMessage(data.response, 'ai');
-                        this.updateStatus('Targeted interview started! Questions are tailored to your background and the job requirements.', 'success');
+                        this.showStatus('Targeted interview started! Questions are tailored to your background and the job requirements.', 'success');
                         this.chatInput.focus();
                     } else {
-                        this.updateStatus(`Error: ${data.error}`, 'error');
+                        this.showStatus(`Error: ${data.error}`, 'error');
                     }
                 } catch (error) {
-                    this.updateStatus(`Failed to start interview: ${error.message}`, 'error');
+                    this.showStatus(`Failed to start interview: ${error.message}`, 'error');
                 }
             }
             
             async sendMessage() {
-                console.log('Sending message with session ID:', this.sessionId);
                 const message = this.chatInput.value.trim();
                 if (!message || this.sendBtn.disabled) return;
                 
@@ -1134,7 +1236,7 @@ The more detailed, the better!"
             }
             
             async getSummary() {
-                this.updateStatus('Generating comprehensive interview summary with job fit analysis...', 'loading');
+                this.showStatus('Generating comprehensive interview summary with job fit analysis...', 'loading');
                 
                 try {
                     const response = await fetch(`${this.baseUrl}/get_summary`, {
@@ -1151,12 +1253,12 @@ The more detailed, the better!"
                         this.summarySection.style.display = 'block';
                         this.summaryContent.textContent = data.summary;
                         this.controls.classList.add('show');
-                        this.updateStatus(`Interview completed! ${data.questions_asked} questions answered with detailed job fit analysis.`, 'success');
+                        this.showStatus(`Interview completed! ${data.questions_asked} questions answered with detailed job fit analysis.`, 'success');
                     } else {
-                        this.updateStatus(`Error generating summary: ${data.error}`, 'error');
+                        this.showStatus(`Error generating summary: ${data.error}`, 'error');
                     }
                 } catch (error) {
-                    this.updateStatus(`Failed to generate summary: ${error.message}`, 'error');
+                    this.showStatus(`Failed to generate summary: ${error.message}`, 'error');
                 }
             }
             
@@ -1164,10 +1266,8 @@ The more detailed, the better!"
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${type}`;
                 
-                // Format the content to handle sections better
                 let formattedContent = content;
                 if (type === 'ai') {
-                    // Replace section headers with better formatting - only headers in bold
                     formattedContent = content
                         .replace(/WELCOME:\s*/g, '<br><strong>WELCOME:</strong><br>')
                         .replace(/FIRST QUESTION:\s*/g, '<br><strong>FIRST QUESTION:</strong><br>')
@@ -1178,7 +1278,6 @@ The more detailed, the better!"
                         .replace(/\n/g, '<br>')
                         .trim();
                     
-                    // Remove any leading <br> tags
                     if (formattedContent.startsWith('<br>')) {
                         formattedContent = formattedContent.substring(4);
                     }
@@ -1213,10 +1312,6 @@ The more detailed, the better!"
                 }
             }
             
-            updateStatus(message, type) {
-                this.status.innerHTML = `<div class="status ${type}">${message}</div>`;
-            }
-
             async downloadTranscript() {
                 const downloadBtn = document.getElementById('downloadTranscriptBtn');
                 const originalText = downloadBtn.textContent;
@@ -1224,7 +1319,7 @@ The more detailed, the better!"
                 downloadBtn.disabled = true;
                 
                 try {
-                    this.updateStatus('Generating interview transcript...', 'loading');
+                    this.showStatus('Generating interview transcript...', 'loading');
                     
                     const response = await fetch(`${this.baseUrl}/download_transcript`, {
                         method: 'POST',
@@ -1235,7 +1330,6 @@ The more detailed, the better!"
                     const data = await response.json();
                     
                     if (response.ok && data.success) {
-                        // Create and download the transcript file
                         const blob = new Blob([data.transcript], {type: 'text/plain'});
                         const url = URL.createObjectURL(blob);
                         
@@ -1247,45 +1341,26 @@ The more detailed, the better!"
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                         
-                        this.updateStatus('Interview transcript downloaded successfully!', 'success');
+                        this.showStatus('Interview transcript downloaded successfully!', 'success');
                     } else {
                         throw new Error(data.error || 'Failed to generate transcript');
                     }
-                    
                 } catch (error) {
-                    console.error('Transcript download error:', error);
-                    this.updateStatus(`Transcript download failed: ${error.message}`, 'error');
+                    this.showStatus(`Transcript download failed: ${error.message}`, 'error');
                 } finally {
                     downloadBtn.textContent = originalText;
                     downloadBtn.disabled = false;
                 }
             }
 
-            async startNewInterview() {
-                try {
-                    if (this.sessionId) {
-                        await fetch(`${this.baseUrl}/clear_session`, {
-                            method: 'POST',
-                            headers: {'Content-Type': 'application/json'},
-                            body: JSON.stringify({session_id: this.sessionId})
-                        });
-                    }
-                    location.reload();
-                } catch (error) {
-                    console.error('Failed to clear session:', error);
-                    location.reload();
-                }
-            }
-            
             async downloadSummary() {
-                // Show loading state
                 const downloadBtn = document.getElementById('downloadBtn');
                 const originalText = downloadBtn.textContent;
                 downloadBtn.textContent = 'Generating PDF...';
                 downloadBtn.disabled = true;
                 
                 try {
-                    this.updateStatus('Generating professional PDF summary...', 'loading');
+                    this.showStatus('Generating professional PDF summary...', 'loading');
                     
                     const response = await fetch(`${this.baseUrl}/generate_pdf`, {
                         method: 'POST',
@@ -1296,7 +1371,6 @@ The more detailed, the better!"
                     const data = await response.json();
                     
                     if (response.ok && data.success) {
-                        // Convert base64 to blob and download
                         const pdfBlob = this.base64ToBlob(data.pdf_data, 'application/pdf');
                         const url = URL.createObjectURL(pdfBlob);
                         
@@ -1308,24 +1382,19 @@ The more detailed, the better!"
                         document.body.removeChild(a);
                         URL.revokeObjectURL(url);
                         
-                        this.updateStatus('PDF downloaded successfully!', 'success');
+                        this.showStatus('PDF downloaded successfully!', 'success');
                     } else {
                         throw new Error(data.error || 'Failed to generate PDF');
                     }
                 } catch (error) {
-                    console.error('PDF generation error:', error);
-                    this.updateStatus(`PDF generation failed: ${error.message}`, 'error');
-                    
-                    // Fallback to text download
+                    this.showStatus(`PDF generation failed: ${error.message}`, 'error');
                     this.downloadSummaryAsText();
                 } finally {
-                    // Restore button state
                     downloadBtn.textContent = originalText;
                     downloadBtn.disabled = false;
                 }
             }
 
-            // Helper method to convert base64 to blob
             base64ToBlob(base64Data, contentType = '') {
                 const byteCharacters = atob(base64Data);
                 const byteArrays = [];
@@ -1345,7 +1414,6 @@ The more detailed, the better!"
                 return new Blob(byteArrays, {type: contentType});
             }
 
-            // Keep the existing text download as fallback
             downloadSummaryAsText() {
                 const summaryText = this.summaryContent.textContent;
                 const timestamp = new Date().toISOString().slice(0,10);
@@ -1360,13 +1428,41 @@ The more detailed, the better!"
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }
+
+            async startNewInterview() {
+                try {
+                    if (this.sessionId) {
+                        await fetch(`${this.baseUrl}/clear_session`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({session_id: this.sessionId})
+                        });
+                    }
+                    location.reload();
+                } catch (error) {
+                    location.reload();
+                }
+            }
+            
+            isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+            
+            showStatus(message, type) {
+                this.status.innerHTML = `<div class="status ${type}">${message}</div>`;
+                setTimeout(() => {
+                    if (type !== 'success') this.clearStatus();
+                }, 5000);
+            }
+            
+            clearStatus() {
+                this.status.innerHTML = '';
+            }
         }
         
         // Initialize the application
         document.addEventListener('DOMContentLoaded', () => {
-            const coach = new InterviewCoach();
-            // Check URL parameters on page load
-            coach.checkUrlParameters();
+            new InterviewCoach();
         });
     </script>
 </body>
