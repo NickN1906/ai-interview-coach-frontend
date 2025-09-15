@@ -1025,9 +1025,26 @@ The more detailed, the better!"
                 }
                 
                 this.signupSubmit.disabled = true;
-                this.signupSubmit.textContent = 'Processing...';
+                this.signupSubmit.textContent = 'Checking subscription...';
                 
                 try {
+                    // First check if user already has an active subscription
+                    const hasSubscription = await this.checkSubscriptionStatus(email);
+                    if (hasSubscription) {
+                        this.showStatus('This email already has an active subscription! Please use the "Existing User" option to sign in.', 'error');
+                        this.signupSubmit.disabled = false;
+                        this.signupSubmit.textContent = 'Start Monthly Subscription';
+                        
+                        // Optionally, highlight the existing user option
+                        setTimeout(() => {
+                            this.showStatus('Click "Existing User" above to access your account.', 'error');
+                        }, 3000);
+                        return;
+                    }
+                    
+                    // Proceed with new subscription if no existing subscription found
+                    this.signupSubmit.textContent = 'Creating checkout...';
+                    
                     const response = await fetch(`${this.baseUrl}/create-checkout-session`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
