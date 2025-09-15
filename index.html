@@ -825,10 +825,32 @@ The more detailed, the better!"
                     return;
                 }
                 
+                // Double-check subscription status before creating checkout
                 this.subscribeBtn.disabled = true;
-                this.subscribeBtn.textContent = 'Processing...';
+                this.subscribeBtn.textContent = 'Verifying subscription...';
                 
                 try {
+                    const statusResponse = await fetch(`${this.baseUrl}/subscription-status`, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({customer_email: this.customerEmail})
+                    });
+                    
+                    const statusData = await statusResponse.json();
+                    
+                    if (statusData.has_active_subscription) {
+                        // User already has subscription - don't charge again
+                        this.hasActiveSubscription = true;
+                        this.showSubscriptionSuccess(statusData.subscription_info);
+                        this.showUploadSection();
+                        localStorage.setItem('customerEmail', this.customerEmail);
+                        this.updateStatus('Welcome back! Your subscription is already active.', 'success');
+                        return;
+                    }
+                    
+                    // Proceed with new subscription
+                    this.subscribeBtn.textContent = 'Creating checkout...';
+                    
                     const response = await fetch(`${this.baseUrl}/create-checkout-session`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -851,8 +873,7 @@ The more detailed, the better!"
                     }
                 } catch (error) {
                     this.updateStatus(`Payment setup failed: ${error.message}`, 'error');
-                    this.subscribeBtn.disabled = false;
-                    this.subscribeBtn.textContent = 'Start Your Subscription';
+                    this.showSubscribeButton();
                 }
             }
             
