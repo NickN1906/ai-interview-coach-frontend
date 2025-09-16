@@ -921,7 +921,7 @@
                 
                 <!-- Trial Status Banner -->
                 <div class="trial-status-banner" id="trialStatusBanner" style="display: none;">
-                    <span id="trialStatusText">Trial Status: 2 interviews remaining</span>
+                    <span id="trialStatusText">Trial Status: 1 interview remaining</span>
                 </div>
                 
                 <div class="upload-grid">
@@ -1020,7 +1020,7 @@ The more detailed, the better!"
                 this.trialStatus = {
                     interviews_used: 0,
                     interviews_remaining: 1,
-                    trial_limit: 2,
+                    trial_limit: 1,
                     trial_expired: false
                 };
                 
@@ -1249,8 +1249,8 @@ The more detailed, the better!"
                         if (!accessData.isSubscribed) {
                             this.trialStatus = {
                                 interviews_used: accessData.interviews_used || 0,
-                                interviews_remaining: accessData.interviews_remaining || 2,
-                                trial_limit: accessData.trial_limit || 2,
+                                interviews_remaining: accessData.interviews_remaining || 1,
+                                trial_limit: accessData.trial_limit || 1,
                                 trial_expired: accessData.trial_status === 'expired'
                             };
                         }
@@ -1317,8 +1317,8 @@ The more detailed, the better!"
                         if (!accessData.isSubscribed) {
                             this.trialStatus = {
                                 interviews_used: accessData.interviews_used || 0,
-                                interviews_remaining: accessData.interviews_remaining || 2,
-                                trial_limit: accessData.trial_limit || 2,
+                                interviews_remaining: accessData.interviews_remaining || 1,
+                                trial_limit: accessData.trial_limit || 1,
                                 trial_expired: accessData.trial_status === 'expired'
                             };
                         }
@@ -1373,8 +1373,8 @@ The more detailed, the better!"
                         this.hasActiveSubscription = false;
                         this.trialStatus = {
                             interviews_used: accessData.interviews_used || 0,
-                            interviews_remaining: accessData.interviews_remaining || 2,
-                            trial_limit: accessData.trial_limit || 2,
+                            interviews_remaining: accessData.interviews_remaining || 1,
+                            trial_limit: accessData.trial_limit || 1,
                             trial_expired: false
                         };
                         
