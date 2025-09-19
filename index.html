@@ -87,16 +87,36 @@
             padding: 40px 20px;
         }
 
-        .canadian-flag {
-            font-size: 0.8em;
+        .flag-canada {
+            display: inline-block;
+            width: 20px;
+            height: 14px;
             margin-left: 8px;
             vertical-align: middle;
+            position: relative;
+            background: linear-gradient(to right, #FF0000 0%, #FF0000 25%, #FFFFFF 25%, #FFFFFF 75%, #FF0000 75%, #FF0000 100%);
+            border-radius: 2px;
+        }
+
+        .flag-canada::after {
+            content: '🍁';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8px;
+            color: #FF0000;
         }
 
         @media (max-width: 768px) {
-            .canadian-flag {
-                font-size: 0.7em;
+            .flag-canada {
+                width: 16px;
+                height: 11px;
                 margin-left: 6px;
+            }
+            
+            .flag-canada::after {
+                font-size: 6px;
             }
         }
 
@@ -828,7 +848,7 @@
             <div class="logo-container">
                 <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
                 <div>
-                    <h1>ImmNet AI Interview Coach <span class="canadian-flag">🇨🇦</span></h1>
+                    <h1>ImmNet AI Interview Coach <span class="flag-canada"></span></h1>
                 </div>
             </div>
             <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
