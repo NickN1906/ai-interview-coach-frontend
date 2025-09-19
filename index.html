@@ -120,6 +120,37 @@
             }
         }
 
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(219, 24, 24, 0.1);
+            max-width: 1000px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            border: 2px solid #DB1818;
+            margin: 0 auto; /* This ensures centering */
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        body { 
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #FFF9F5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
         .welcome-screen h2 {
             color: #DB1818;
             font-size: 2em;
@@ -844,15 +875,16 @@
     </style>
 </head>
 <body>
+    <div class="container">
     <div class="header">
-            <div class="logo-container">
-                <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
-                <div>
-                    <h1>ImmNet AI Interview Coach <span class="flag-canada"></span></h1>
-                </div>
+        <div class="logo-container">
+            <img src="immnet-logo.png" alt="Immnet Logo" class="network-logo">
+            <div>
+                <h1>ImmNet AI Interview Coach 🇨🇦</h1>
             </div>
-            <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
         </div>
+        <p>Master Canadian Job Market Interviews with AI-Powered Practice</p>
+    </div>
                 
         <div class="content">
             <!-- Welcome Screen -->
