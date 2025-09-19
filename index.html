@@ -271,6 +271,31 @@
             font-size: 1.8em;
         }
 
+        .user-info-section {
+            margin-bottom: 20px;
+        }
+
+        .name-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .name-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .name-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .name-input {
+                margin-bottom: 15px;
+            }
+        }
         /* Plan Selection Styles */
         .plan-selection {
             display: grid;
@@ -941,7 +966,14 @@
                     </div>
                 </div>
                 
-                <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address" required>
+                <div class="user-info-section">
+                    <div class="name-row">    
+                        <input type="text" class="form-input name-input" id="signupFirstName" placeholder="First Name" required>
+                        <input type="text" class="form-input name-input" id="signupLastName" placeholder="Last Name" required>
+                    </div>     
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address" required>
+                </div>    
+            
                 <button class="form-btn signup-btn-submit" id="signupSubmit">Start Free Trial</button>
                 <a class="back-link" id="backToWelcomeFromSignup">← Back to options</a>
             </div>
@@ -1372,11 +1404,19 @@ The more detailed, the better!"
             }
             
             async handleSignup() {
+                const firstName = this.signupFirstName.value.trim();
+                const lastName = this.signupLastName.value.trim();
                 const email = this.signupEmail.value.trim();
-                if (!this.isValidEmail(email)) {
-                    this.showStatus('Please enter a valid email address.', 'error');
+
+                if (!firstName || !lastName || !this.isValidEmail(email)) {
+                    this.showStatus('Please fill in all fields with valid information.', 'error');
                     return;
                 }
+
+                // Store customer info
+                this.customerFirstName = firstName;
+                this.customerLastName = lastName;
+                this.customerEmail = email;
                 
                 // Handle trial signup
                 if (this.selectedPlan === 'trial') {
