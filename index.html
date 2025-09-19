@@ -966,13 +966,14 @@
                     </div>
                 </div>
                 
+                <!-- Replace your existing user-info-section with this: -->
                 <div class="user-info-section">
                     <div class="name-row">    
                         <input type="text" class="form-input name-input" id="signupFirstName" placeholder="First Name" required>
                         <input type="text" class="form-input name-input" id="signupLastName" placeholder="Last Name" required>
                     </div>     
                     <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address" required>
-                </div>    
+                </div>  
             
                 <button class="form-btn signup-btn-submit" id="signupSubmit">Start Free Trial</button>
                 <a class="back-link" id="backToWelcomeFromSignup">← Back to options</a>
@@ -1068,7 +1069,7 @@ The more detailed, the better!"
 
     <script>
         // Initialize Stripe (replace with your publishable key)
-        const stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_HERE');
+        const stripe = Stripe('pk_live_51QZxlpDHULmPlPc5llWlN2yiQD1xgDena3OX3IlBHiXP2UCYUUNd74akCBD0sj5KO6BqMbNo5XpCB4Ms0hR3Yttb00OyXINLV8');
         
         class InterviewCoach {
             constructor() {
@@ -1110,6 +1111,9 @@ The more detailed, the better!"
                 
                 this.loginEmail = document.getElementById('loginEmail');
                 this.loginSubmit = document.getElementById('loginSubmit');
+                
+                this.signupFirstName = document.getElementById('signupFirstName');
+                this.signupLastName = document.getElementById('signupLastName');
                 this.signupEmail = document.getElementById('signupEmail');
                 this.signupSubmit = document.getElementById('signupSubmit');
                 
@@ -1142,15 +1146,15 @@ The more detailed, the better!"
             }
             
             bindEvents() {
-                // Navigation
-                this.loginOption.addEventListener('click', () => this.showLoginForm());
-                this.signupOption.addEventListener('click', () => this.showSignupForm());
-                this.backToWelcome.addEventListener('click', () => this.showWelcomeScreen());
-                this.backToWelcomeFromSignup.addEventListener('click', () => this.showWelcomeScreen());
+                // Navigation - add null checks
+                if (this.loginOption) this.loginOption.addEventListener('click', () => this.showLoginForm());
+                if (this.signupOption) this.signupOption.addEventListener('click', () => this.showSignupForm());
+                if (this.backToWelcome) this.backToWelcome.addEventListener('click', () => this.showWelcomeScreen());
+                if (this.backToWelcomeFromSignup) this.backToWelcomeFromSignup.addEventListener('click', () => this.showWelcomeScreen());
                 
-                // Form submissions
-                this.loginSubmit.addEventListener('click', () => this.handleLogin());
-                this.signupSubmit.addEventListener('click', () => this.handleSignup());
+                // Form submissions - add null checks
+                if (this.loginSubmit) this.loginSubmit.addEventListener('click', () => this.handleLogin());
+                if (this.signupSubmit) this.signupSubmit.addEventListener('click', () => this.handleSignup());
                 
                 // Plan selection events
                 document.addEventListener('click', (e) => {
@@ -1160,10 +1164,10 @@ The more detailed, the better!"
                     }
                 });
                 
-                // Upload events
-                this.uploadBtn.addEventListener('click', (e) => {
+                // Rest of your existing events with null checks...
+                if (this.uploadBtn) this.uploadBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    this.resumeInput.click();
+                    if (this.resumeInput) this.resumeInput.click();
                 });
                 
                 this.uploadArea.addEventListener('click', (e) => {
