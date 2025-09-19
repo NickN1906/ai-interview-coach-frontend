@@ -1423,33 +1423,41 @@ The more detailed, the better!"
                 this.customerEmail = email;
                 
                 // Handle trial signup
+                // Handle trial signup
                 if (this.selectedPlan === 'trial') {
                     this.signupSubmit.disabled = true;
                     this.signupSubmit.textContent = 'Setting up trial...';
                     
                     try {
-                        // Check if user already has trial or subscription
-                        const accessData = await this.checkTrialStatus(email);
+                        // IMPORTANT: Actually create the trial user record on the backend
+                        const createTrialResponse = await fetch(`${this.baseUrl}/create-trial-user`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({
+                                customer_email: email,
+                                first_name: firstName,
+                                last_name: lastName
+                            })
+                        });
+
+                        const trialData = await createTrialResponse.json();
                         
-                        if (accessData.isSubscribed) {
-                            this.showStatus('This email already has an active subscription! Please use the "Existing User" option to sign in.', 'error');
-                            return;
-                        }
-                        
-                        if (accessData.isTrialUser && accessData.trial_status === 'expired') {
-                            this.showStatus('You have already used your free trial. Please choose a paid plan to continue.', 'error');
-                            // Automatically select quarterly plan
-                            this.selectPlan('quarterly');
-                            return;
+                        if (!createTrialResponse.ok) {
+                            if (trialData.trial_expired) {
+                                this.showStatus('You have already used your free trial. Please choose a paid plan to continue.', 'error');
+                                this.selectPlan('quarterly');
+                                return;
+                            }
+                            throw new Error(trialData.error || 'Failed to create trial');
                         }
                         
                         // Set up trial access
                         this.customerEmail = email;
                         this.hasActiveSubscription = false;
                         this.trialStatus = {
-                            interviews_used: accessData.interviews_used || 0,
-                            interviews_remaining: accessData.interviews_remaining || 1,
-                            trial_limit: accessData.trial_limit || 1,
+                            interviews_used: trialData.interviews_used || 0,
+                            interviews_remaining: trialData.interviews_remaining || 1,
+                            trial_limit: trialData.trial_limit || 1,
                             trial_expired: false
                         };
                         
@@ -1458,6 +1466,7 @@ The more detailed, the better!"
                         this.showStatus('Free trial activated! You have 1 interview to try our service.', 'success');
                         
                     } catch (error) {
+                        console.error('Trial setup error:', error);
                         this.showStatus('Trial setup failed. Please try again.', 'error');
                     } finally {
                         this.signupSubmit.disabled = false;
@@ -1465,7 +1474,6 @@ The more detailed, the better!"
                     }
                     return;
                 }
-                
                 // Handle paid plan signup
                 this.signupSubmit.disabled = true;
                 this.signupSubmit.textContent = 'Checking subscription...';
