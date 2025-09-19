@@ -1921,6 +1921,7 @@ The more detailed, the better!"
 
             async startNewInterview() {
                 try {
+                    // Clear the current session first
                     if (this.sessionId) {
                         await fetch(`${this.baseUrl}/clear_session`, {
                             method: 'POST',
@@ -1928,8 +1929,41 @@ The more detailed, the better!"
                             body: JSON.stringify({session_id: this.sessionId})
                         });
                     }
+                    
+                    // Check if user still has access (subscription or remaining trial)
+                    if (this.customerEmail) {
+                        const accessData = await this.checkTrialStatus(this.customerEmail);
+                        
+                        if (!accessData.hasAccess && !accessData.isSubscribed) {
+                            // User has no more access - show upgrade message
+                            this.showWelcomeScreen();
+                            this.showStatus('Your trial has expired. Please subscribe to continue with unlimited interviews.', 'error');
+                            
+                            // Show upgrade options
+                            this.showSignupForm();
+                            this.selectPlan('quarterly'); // Default to popular plan
+                            return;
+                        }
+                        
+                        // Update trial status for frontend display
+                        if (!accessData.isSubscribed) {
+                            this.trialStatus = {
+                                interviews_used: accessData.interviews_used || 0,
+                                interviews_remaining: accessData.interviews_remaining || 0,
+                                trial_limit: accessData.trial_limit || 1,
+                                trial_expired: accessData.trial_status === 'expired'
+                            };
+                        }
+                        
+                        this.hasActiveSubscription = accessData.isSubscribed;
+                    }
+                    
+                    // If user still has access, reload to start fresh
                     location.reload();
+                    
                 } catch (error) {
+                    console.error('Error checking access for new interview:', error);
+                    // On error, still reload but user will be checked again during upload
                     location.reload();
                 }
             }
