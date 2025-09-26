@@ -1825,7 +1825,7 @@ The more detailed, the better!"
                             if (attempts < maxAttempts) {
                                 // Show progress
                                 const elapsed = Math.floor(attempts * 2);
-                                this.showStatus(`Analyzing your complete interview... (${elapsed}s elapsed)`, 'loading');
+                                this.showStatus(`Analysing your complete interview... (${elapsed}s elapsed)`, 'loading');
                                 
                                 // Continue polling in 2 seconds
                                 setTimeout(poll, 2000);
@@ -1883,7 +1883,7 @@ The more detailed, the better!"
             addTypingIndicator() {
                 const typingDiv = document.createElement('div');
                 typingDiv.className = 'message ai typing';
-                typingDiv.innerHTML = '<div>AI Coach is analyzing your response<span class="loading-dots"></span></div>';
+                typingDiv.innerHTML = '<div>AI Coach is analysing your response<span class="loading-dots"></span></div>';
                 
                 this.chatMessages.appendChild(typingDiv);
                 this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
