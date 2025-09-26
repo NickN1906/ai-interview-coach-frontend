@@ -1725,9 +1725,10 @@ The more detailed, the better!"
             }
             
             async getSummary() {
-                this.showStatus('Generating comprehensive interview summary with job fit analysis...', 'loading');
+                this.showStatus('Starting comprehensive interview analysis...', 'loading');
                 
                 try {
+                    // Start the summary generation
                     const response = await fetch(`${this.baseUrl}/get_summary`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -1736,28 +1737,114 @@ The more detailed, the better!"
                     
                     const data = await response.json();
                     
-                    if (response.ok) {
-                        this.interviewState = 'completed';
-                        this.chatSection.style.display = 'none';
-                        this.summarySection.style.display = 'block';
-                        this.summaryContent.textContent = data.summary;
-                        this.controls.classList.add('show');
-                        
-                        if (data.trial_expired) {
-                            this.trialStatus.trial_expired = true;
-                            this.showTrialExpiredMessage(data);
-                            // Update trial status
-                            this.trialStatus.interviews_used = data.interviews_used;
-                            this.trialStatus.interviews_remaining = Math.max(0, data.trial_limit - data.interviews_used);
-                        } else {
-                            this.showStatus(`Interview completed! ${data.questions_asked} questions answered with detailed job fit analysis.`, 'success');
-                        }
-                    } else {
-                        this.showStatus(`Error generating summary: ${data.error}`, 'error');
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Failed to start summary generation');
                     }
+                    
+                    // Check if already completed (unlikely but possible)
+                    if (data.interview_complete) {
+                        this.handleSummaryComplete(data);
+                        return;
+                    }
+                    
+                    // Store job ID and start polling
+                    this.currentJobId = data.job_id;
+                    this.showStatus('Generating detailed analysis... This may take 30-60 seconds for comprehensive feedback.', 'loading');
+                    
+                    // Start polling for completion
+                    this.pollForSummary(data.job_id);
+                    
                 } catch (error) {
-                    this.showStatus(`Failed to generate summary: ${error.message}`, 'error');
+                    this.showStatus(`Summary generation failed: ${error.message}`, 'error');
                 }
+            }
+            
+            handleSummaryComplete(data) {
+                this.interviewState = 'completed';
+                this.chatSection.style.display = 'none';
+                this.summarySection.style.display = 'block';
+                this.summaryContent.textContent = data.summary;
+                this.controls.classList.add('show');
+                
+                this.showStatus(`Interview completed! Comprehensive analysis generated with ${data.questions_asked} questions answered.`, 'success');
+            }
+
+            showFallbackOptions() {
+                const fallbackHTML = `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 20px; margin: 15px 0; text-align: center;">
+                        <h4 style="color: #856404; margin-bottom: 15px;">Analysis Unavailable</h4>
+                        <p style="color: #856404; margin-bottom: 15px;">You can still access your interview data:</p>
+                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                            <button onclick="window.interviewCoach.downloadTranscript()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                Download Transcript
+                            </button>
+                            <button onclick="window.interviewCoach.retryAnalysis()" style="background: #DB1818; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('status').innerHTML = fallbackHTML;
+                this.controls.classList.add('show');
+            }
+
+            retryAnalysis() {
+                // Clear fallback options
+                const fallbackDiv = document.querySelector('[style*="background: #fff3cd"]');
+                if (fallbackDiv) fallbackDiv.remove();
+                
+                // Retry summary generation
+                this.getSummary();
+            }
+            async pollForSummary(jobId) {
+                const maxAttempts = 45; // 90 seconds max (45 attempts × 2 seconds)
+                let attempts = 0;
+                
+                const poll = async () => {
+                    attempts++;
+                    
+                    try {
+                        const response = await fetch(`${this.baseUrl}/check_summary_status/${jobId}`);
+                        
+                        if (!response.ok) {
+                            throw new Error(`Status check failed: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        
+                        if (data.status === 'completed') {
+                            // Summary is ready!
+                            this.handleSummaryComplete(data);
+                            return;
+                            
+                        } else if (data.status === 'failed') {
+                            throw new Error(data.error || 'Summary generation failed');
+                            
+                        } else if (data.status === 'processing' || data.status === 'pending') {
+                            if (attempts < maxAttempts) {
+                                // Show progress
+                                const elapsed = Math.floor(attempts * 2);
+                                this.showStatus(`Analyzing your complete interview... (${elapsed}s elapsed)`, 'loading');
+                                
+                                // Continue polling in 2 seconds
+                                setTimeout(poll, 2000);
+                            } else {
+                                throw new Error('Analysis is taking longer than expected. Please try downloading the transcript instead.');
+                            }
+                        } else {
+                            throw new Error(`Unknown status: ${data.status}`);
+                        }
+                        
+                    } catch (error) {
+                        this.showStatus(`Summary generation failed: ${error.message}`, 'error');
+                        // Show fallback options
+                        this.showFallbackOptions();
+                    }
+                };
+                
+                // Start polling after 2 seconds
+                setTimeout(poll, 2000);
             }
             
             addMessage(content, type) {
