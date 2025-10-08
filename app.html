@@ -1293,10 +1293,18 @@ The more detailed, the better!"
             }
             
             updateTrialStatusBanner() {
-                if (!this.hasActiveSubscription) {
+                if (this.hasActiveSubscription) {
+                    // Premium subscriber
                     this.trialStatusBanner.style.display = 'block';
-                    this.trialStatusText.textContent = `Trial Status: ${this.trialStatus.interviews_remaining} interviews remaining`;
+                    this.trialStatusBanner.style.background = 'linear-gradient(135deg, #DB1818 0%, #8A0F0F 100%)';
+                    this.trialStatusText.textContent = '✨ Premium Account - Unlimited Interview Access';
+                } else if (!this.trialStatus.trial_expired && this.trialStatus.interviews_remaining > 0) {
+                    // Trial user with remaining interviews
+                    this.trialStatusBanner.style.display = 'block';
+                    this.trialStatusBanner.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                    this.trialStatusText.textContent = `Trial Status: ${this.trialStatus.interviews_remaining} interview(s) remaining`;
                 } else {
+                    // Trial expired or no access
                     this.trialStatusBanner.style.display = 'none';
                 }
             }
