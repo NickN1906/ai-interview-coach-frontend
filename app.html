@@ -872,6 +872,43 @@
             .logo-container { flex-direction: column; }
             .network-logo { margin-right: 0; margin-bottom: 10px; }
         }
+
+        /* --- Auth & account additions --- */
+        .form-subtext {
+            color: #666;
+            font-size: 14px;
+            margin: -8px 0 18px;
+            text-align: center;
+        }
+        .account-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            background: #f7f7fb;
+            border: 1px solid #ececf3;
+            border-radius: 10px;
+        }
+        .account-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .account-email { font-weight: 600; color: #1a1a1a; font-size: 14px; word-break: break-all; }
+        .account-plan { color: #666; font-size: 12px; }
+        .account-actions { display: flex; gap: 8px; align-items: center; }
+        .account-link-btn {
+            background: none;
+            border: 1px solid #d4d4de;
+            color: #4f46e5;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .account-link-btn:hover { background: #eeeefb; border-color: #4f46e5; }
+        #cancelSubBtn { color: #b00020; border-color: #e6c3c9; }
+        #cancelSubBtn:hover { background: #fdecef; border-color: #b00020; }
     </style>
 </head>
 <body>
@@ -911,8 +948,35 @@
             <div class="login-form" id="loginForm">
                 <h2>Welcome Back!</h2>
                 <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email address" required>
-                <button class="form-btn login-btn-submit" id="loginSubmit">Access My Account</button>
+                <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                <button class="form-btn login-btn-submit" id="loginSubmit">Sign In</button>
+                <a class="back-link" id="forgotPasswordLink" style="cursor:pointer">Forgot / set up your password?</a>
                 <a class="back-link" id="backToWelcome">← Back to options</a>
+            </div>
+
+            <!-- Create Account Form (new users, step 1) -->
+            <div class="login-form" id="accountForm" style="display:none">
+                <h2>Create Your Account</h2>
+                <p class="form-subtext">First, set up your login. You'll choose a plan next.</p>
+                <div class="name-row">
+                    <input type="text" class="form-input name-input" id="accountFirstName" placeholder="First Name" required>
+                    <input type="text" class="form-input name-input" id="accountLastName" placeholder="Last Name" required>
+                </div>
+                <input type="email" class="form-input" id="accountEmail" placeholder="Enter your email address" required>
+                <input type="password" class="form-input" id="accountPassword" placeholder="Create a password (min 8 characters)" required>
+                <input type="password" class="form-input" id="accountPasswordConfirm" placeholder="Confirm password" required>
+                <button class="form-btn login-btn-submit" id="accountSubmit">Create Account &amp; Continue</button>
+                <a class="back-link" id="backToWelcomeFromAccount">← Back to options</a>
+            </div>
+
+            <!-- Set / Reset Password Form (from emailed link) -->
+            <div class="login-form" id="setPasswordForm" style="display:none">
+                <h2 id="setPasswordHeading">Set Your Password</h2>
+                <p class="form-subtext" id="setPasswordSubtext">Choose a password to secure your account. Your subscription and history stay exactly as they are.</p>
+                <input type="password" class="form-input" id="setPasswordInput" placeholder="New password (min 8 characters)" required>
+                <input type="password" class="form-input" id="setPasswordConfirm" placeholder="Confirm password" required>
+                <button class="form-btn login-btn-submit" id="setPasswordSubmit">Save Password</button>
+                <a class="back-link" id="backToWelcomeFromSetPassword">← Back to sign in</a>
             </div>
 
             <!-- Signup Form -->
@@ -977,14 +1041,15 @@
                     </div>
                 </div>
                 
-                <!-- Replace your existing user-info-section with this: -->
-                <div class="user-info-section">
-                    <div class="name-row">    
-                        <input type="text" class="form-input name-input" id="signupFirstName" placeholder="First Name" required>
-                        <input type="text" class="form-input name-input" id="signupLastName" placeholder="Last Name" required>
-                    </div>     
-                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address" required>
-                </div>  
+                <!-- Name/email collected in the account step; kept hidden here so the
+                     existing handleSignup() logic can still read them. -->
+                <div class="user-info-section" id="signupUserInfo" style="display:none">
+                    <div class="name-row">
+                        <input type="text" class="form-input name-input" id="signupFirstName" placeholder="First Name">
+                        <input type="text" class="form-input name-input" id="signupLastName" placeholder="Last Name">
+                    </div>
+                    <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email address">
+                </div>
             
                 <button class="form-btn signup-btn-submit" id="signupSubmit">Start Free Trial</button>
                 <a class="back-link" id="backToWelcomeFromSignup">← Back to options</a>
@@ -992,8 +1057,21 @@
 
             <!-- Upload Section -->
             <div class="upload-section" id="uploadSection">
+
+                <!-- Account bar: identity, plan, manage/cancel, logout -->
+                <div class="account-bar" id="accountBar">
+                    <div class="account-info">
+                        <span class="account-email" id="accountBarEmail"></span>
+                        <span class="account-plan" id="accountBarPlan"></span>
+                    </div>
+                    <div class="account-actions">
+                        <button class="account-link-btn" id="cancelSubBtn" style="display:none">Cancel Subscription</button>
+                        <button class="account-link-btn" id="logoutBtn">Log out</button>
+                    </div>
+                </div>
+
                 <h3>Prepare Your Interview Materials</h3>
-                
+
                 <!-- Trial Status Banner -->
                 <div class="trial-status-banner" id="trialStatusBanner" style="display: none;">
                     <span id="trialStatusText">Trial Status: 1 interview remaining</span>
@@ -1084,7 +1162,10 @@ The more detailed, the better!"
         
         class InterviewCoach {
             constructor() {
-                this.baseUrl = 'https://your-ai-interview-coach-7f11f441a641.herokuapp.com/';
+                // Production default. For local testing, override in DevTools with:
+                //   localStorage.setItem('apiBaseUrl', 'http://localhost:5000')
+                // (leave unset in production — the default below is used).
+                this.baseUrl = localStorage.getItem('apiBaseUrl') || 'https://your-ai-interview-coach-7f11f441a641.herokuapp.com/';
                 this.interviewState = 'not_started';
                 this.sessionId = null;
                 this.resumeFile = null;
@@ -1121,8 +1202,35 @@ The more detailed, the better!"
                 this.backToWelcomeFromSignup = document.getElementById('backToWelcomeFromSignup');
                 
                 this.loginEmail = document.getElementById('loginEmail');
+                this.loginPassword = document.getElementById('loginPassword');
                 this.loginSubmit = document.getElementById('loginSubmit');
-                
+                this.forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
+                // Create-account step
+                this.accountForm = document.getElementById('accountForm');
+                this.accountFirstName = document.getElementById('accountFirstName');
+                this.accountLastName = document.getElementById('accountLastName');
+                this.accountEmail = document.getElementById('accountEmail');
+                this.accountPassword = document.getElementById('accountPassword');
+                this.accountPasswordConfirm = document.getElementById('accountPasswordConfirm');
+                this.accountSubmit = document.getElementById('accountSubmit');
+                this.backToWelcomeFromAccount = document.getElementById('backToWelcomeFromAccount');
+
+                // Set/reset password step
+                this.setPasswordForm = document.getElementById('setPasswordForm');
+                this.setPasswordHeading = document.getElementById('setPasswordHeading');
+                this.setPasswordSubtext = document.getElementById('setPasswordSubtext');
+                this.setPasswordInput = document.getElementById('setPasswordInput');
+                this.setPasswordConfirm = document.getElementById('setPasswordConfirm');
+                this.setPasswordSubmit = document.getElementById('setPasswordSubmit');
+                this.backToWelcomeFromSetPassword = document.getElementById('backToWelcomeFromSetPassword');
+
+                // Account bar (in upload section)
+                this.accountBarEmail = document.getElementById('accountBarEmail');
+                this.accountBarPlan = document.getElementById('accountBarPlan');
+                this.cancelSubBtn = document.getElementById('cancelSubBtn');
+                this.logoutBtn = document.getElementById('logoutBtn');
+
                 this.signupFirstName = document.getElementById('signupFirstName');
                 this.signupLastName = document.getElementById('signupLastName');
                 this.signupEmail = document.getElementById('signupEmail');
@@ -1159,13 +1267,22 @@ The more detailed, the better!"
             bindEvents() {
                 // Navigation - add null checks
                 if (this.loginOption) this.loginOption.addEventListener('click', () => this.showLoginForm());
-                if (this.signupOption) this.signupOption.addEventListener('click', () => this.showSignupForm());
+                if (this.signupOption) this.signupOption.addEventListener('click', () => this.showAccountForm());
                 if (this.backToWelcome) this.backToWelcome.addEventListener('click', () => this.showWelcomeScreen());
                 if (this.backToWelcomeFromSignup) this.backToWelcomeFromSignup.addEventListener('click', () => this.showWelcomeScreen());
-                
+                if (this.backToWelcomeFromAccount) this.backToWelcomeFromAccount.addEventListener('click', () => this.showWelcomeScreen());
+                if (this.backToWelcomeFromSetPassword) this.backToWelcomeFromSetPassword.addEventListener('click', () => this.showLoginForm());
+                if (this.forgotPasswordLink) this.forgotPasswordLink.addEventListener('click', () => this.requestSetPassword());
+
                 // Form submissions - add null checks
                 if (this.loginSubmit) this.loginSubmit.addEventListener('click', () => this.handleLogin());
                 if (this.signupSubmit) this.signupSubmit.addEventListener('click', () => this.handleSignup());
+                if (this.accountSubmit) this.accountSubmit.addEventListener('click', () => this.handleCreateAccount());
+                if (this.setPasswordSubmit) this.setPasswordSubmit.addEventListener('click', () => this.handleSetPassword());
+
+                // Account bar actions
+                if (this.logoutBtn) this.logoutBtn.addEventListener('click', () => this.logout());
+                if (this.cancelSubBtn) this.cancelSubBtn.addEventListener('click', () => this.cancelSubscription());
                 
                 // Plan selection events
                 document.addEventListener('click', (e) => {
@@ -1230,8 +1347,14 @@ The more detailed, the better!"
                 this.loginEmail.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') this.handleLogin();
                 });
-                this.signupEmail.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.handleSignup();
+                if (this.loginPassword) this.loginPassword.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleLogin();
+                });
+                if (this.accountPasswordConfirm) this.accountPasswordConfirm.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleCreateAccount();
+                });
+                if (this.setPasswordConfirm) this.setPasswordConfirm.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.handleSetPassword();
                 });
             }
             
@@ -1260,36 +1383,72 @@ The more detailed, the better!"
                 this.signupSubmit.textContent = buttonTexts[planType];
             }
             
-            showWelcomeScreen() {
-                this.welcomeScreen.style.display = 'block';
+            _hideAllAuthScreens() {
+                this.welcomeScreen.style.display = 'none';
                 this.loginForm.style.display = 'none';
                 this.signupForm.style.display = 'none';
+                if (this.accountForm) this.accountForm.style.display = 'none';
+                if (this.setPasswordForm) this.setPasswordForm.style.display = 'none';
+            }
+
+            showWelcomeScreen() {
+                this._hideAllAuthScreens();
+                this.welcomeScreen.style.display = 'block';
                 this.uploadSection.classList.remove('show');
                 this.clearStatus();
             }
-            
+
             showLoginForm() {
-                this.welcomeScreen.style.display = 'none';
+                this._hideAllAuthScreens();
                 this.loginForm.style.display = 'block';
-                this.signupForm.style.display = 'none';
+                this.uploadSection.classList.remove('show');
                 this.loginEmail.focus();
             }
-            
+
+            showAccountForm() {
+                this._hideAllAuthScreens();
+                this.accountForm.style.display = 'block';
+                this.uploadSection.classList.remove('show');
+                this.accountFirstName.focus();
+            }
+
+            showSetPasswordForm(isReset) {
+                this._hideAllAuthScreens();
+                if (isReset) {
+                    this.setPasswordHeading.textContent = 'Reset Your Password';
+                    this.setPasswordSubtext.textContent = 'Choose a new password for your account.';
+                }
+                this.setPasswordForm.style.display = 'block';
+                this.uploadSection.classList.remove('show');
+                this.setPasswordInput.focus();
+            }
+
             showSignupForm() {
-                this.welcomeScreen.style.display = 'none';
-                this.loginForm.style.display = 'none';
+                this._hideAllAuthScreens();
                 this.signupForm.style.display = 'block';
-                this.signupEmail.focus();
+                this.uploadSection.classList.remove('show');
                 // Ensure trial is selected by default
                 this.selectPlan('trial');
             }
-            
+
             showUploadSection() {
-                this.welcomeScreen.style.display = 'none';
-                this.loginForm.style.display = 'none';
-                this.signupForm.style.display = 'none';
+                this._hideAllAuthScreens();
                 this.uploadSection.classList.add('show');
                 this.updateTrialStatusBanner();
+                this.updateAccountBar();
+            }
+
+            updateAccountBar() {
+                if (this.accountBarEmail) this.accountBarEmail.textContent = this.customerEmail || '';
+                if (this.accountBarPlan) {
+                    this.accountBarPlan.textContent = this.hasActiveSubscription
+                        ? 'Premium subscription — active'
+                        : 'Free trial';
+                }
+                // Only subscribers can cancel.
+                if (this.cancelSubBtn) {
+                    this.cancelSubBtn.style.display = this.hasActiveSubscription ? 'inline-block' : 'none';
+                }
             }
             
             updateTrialStatusBanner() {
@@ -1310,47 +1469,71 @@ The more detailed, the better!"
             }
             
             async checkInitialState() {
-                const storedEmail = localStorage.getItem('customerEmail');
                 const urlParams = new URLSearchParams(window.location.search);
+                const action = urlParams.get('action');
+                const token = urlParams.get('token');
                 const success = urlParams.get('success');
                 const emailParam = urlParams.get('email');
-                
-                // Handle post-payment redirect
-                if (success === 'true' && emailParam) {
-                    this.customerEmail = decodeURIComponent(emailParam);
-                    localStorage.setItem('customerEmail', this.customerEmail);
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                    this.hasActiveSubscription = true;
-                    this.showUploadSection();
-                    this.showStatus('Payment successful! Welcome to Immnet AI Interview Coach!', 'success');
+
+                // 1) Set/reset-password link from email
+                if (action === 'set-password' && token) {
+                    this.setPasswordToken = token;
+                    this.showSetPasswordForm(false);
                     return;
                 }
-                
-                // Check stored email
-                if (storedEmail) {
-                    this.customerEmail = storedEmail;
-                    const accessData = await this.checkTrialStatus(storedEmail);
-                    if (accessData.hasAccess) {
-                        this.hasActiveSubscription = accessData.isSubscribed;
-                        if (!accessData.isSubscribed) {
-                            this.trialStatus = {
-                                interviews_used: accessData.interviews_used || 0,
-                                interviews_remaining: accessData.interviews_remaining || 1,
-                                trial_limit: accessData.trial_limit || 1,
-                                trial_expired: accessData.trial_status === 'expired'
-                            };
-                        }
+
+                this.authToken = localStorage.getItem('authToken');
+                const storedEmail = localStorage.getItem('customerEmail');
+
+                // 2) Post-payment redirect (user already has an account/token from signup)
+                if (success === 'true' && emailParam) {
+                    const paidEmail = decodeURIComponent(emailParam);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    if (this.authToken) {
+                        this.setSession(this.authToken, paidEmail);
+                        this.hasActiveSubscription = true;
                         this.showUploadSection();
-                        const message = accessData.isSubscribed ? 
-                            'Welcome back! Your subscription is active.' : 
-                            `Welcome back! You have ${this.trialStatus.interviews_remaining} trial interview remaining.`;
-                        this.showStatus(message, 'success');
+                        this.showStatus('Payment successful! Welcome to AI Interview Coach!', 'success');
                         return;
-                    } else {
-                        localStorage.removeItem('customerEmail');
+                    }
+                    // No session — ask them to sign in (hard cutover).
+                    this.showLoginForm();
+                    this.loginEmail.value = paidEmail;
+                    this.showStatus('Payment successful! Please sign in to continue.', 'success');
+                    return;
+                }
+
+                // 3) Returning authenticated user — validate the token server-side
+                if (this.authToken) {
+                    try {
+                        const meResp = await fetch(`${this.baseUrl}/auth/me`, {
+                            method: 'GET',
+                            headers: this.authHeaders()
+                        });
+                        if (meResp.ok) {
+                            const me = await meResp.json();
+                            const email = (me.user && me.user.email) || storedEmail;
+                            this.setSession(this.authToken, email);
+                            const accessData = await this.checkTrialStatus(email);
+                            this.applyAccess(accessData);
+                            this.showUploadSection();
+                            const message = accessData.isSubscribed
+                                ? 'Welcome back! Your subscription is active.'
+                                : (accessData.hasAccess
+                                    ? `Welcome back! You have ${this.trialStatus.interviews_remaining} trial interview remaining.`
+                                    : 'Welcome back! Your trial has ended — subscribe to continue.');
+                            this.showStatus(message, 'success');
+                            return;
+                        }
+                        // Token invalid/expired — clear it.
+                        this.clearSession();
+                    } catch (e) {
+                        // Network issue — fall through to welcome screen.
                     }
                 }
-                
+
+                // 4) Hard cutover: a stored email WITHOUT a valid token no longer grants
+                //    access. Legacy users must sign in (and set a password).
                 this.showWelcomeScreen();
             }
             
@@ -1382,50 +1565,279 @@ The more detailed, the better!"
                 }
             }
             
+            // ---- Auth session helpers ----
+            authHeaders() {
+                const headers = { 'Content-Type': 'application/json' };
+                if (this.authToken) headers['Authorization'] = `Bearer ${this.authToken}`;
+                return headers;
+            }
+
+            setSession(token, email) {
+                this.authToken = token;
+                this.customerEmail = email;
+                if (token) localStorage.setItem('authToken', token);
+                if (email) localStorage.setItem('customerEmail', email);
+            }
+
+            clearSession() {
+                this.authToken = null;
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('customerEmail');
+            }
+
+            applyAccess(accessData) {
+                this.hasActiveSubscription = !!accessData.isSubscribed;
+                if (!accessData.isSubscribed) {
+                    this.trialStatus = {
+                        interviews_used: accessData.interviews_used || 0,
+                        interviews_remaining: accessData.interviews_remaining || 1,
+                        trial_limit: accessData.trial_limit || 1,
+                        trial_expired: accessData.trial_status === 'expired'
+                    };
+                }
+            }
+
             async handleLogin() {
                 const email = this.loginEmail.value.trim();
+                const password = this.loginPassword.value;
+
                 if (!this.isValidEmail(email)) {
                     this.showStatus('Please enter a valid email address.', 'error');
                     return;
                 }
-                
+                if (!password) {
+                    this.showStatus('Please enter your password.', 'error');
+                    return;
+                }
+
                 this.loginSubmit.disabled = true;
-                this.loginSubmit.textContent = 'Checking...';
-                
+                this.loginSubmit.textContent = 'Signing in...';
+
                 try {
-                    const accessData = await this.checkTrialStatus(email);
-                    
-                    if (accessData.hasAccess) {
-                        this.customerEmail = email;
-                        this.hasActiveSubscription = accessData.isSubscribed;
-                        localStorage.setItem('customerEmail', email);
-                        
-                        if (!accessData.isSubscribed) {
-                            this.trialStatus = {
-                                interviews_used: accessData.interviews_used || 0,
-                                interviews_remaining: accessData.interviews_remaining || 1,
-                                trial_limit: accessData.trial_limit || 1,
-                                trial_expired: accessData.trial_status === 'expired'
-                            };
-                        }
-                        
-                        this.showUploadSection();
-                        
-                        const message = accessData.isSubscribed ? 
-                            'Welcome back! Your subscription is active.' : 
-                            `Welcome! You have ${this.trialStatus.interviews_remaining} trial interview remaining.`;
-                        this.showStatus(message, 'success');
-                    } else {
-                        this.showStatus('Your trial has expired. Please subscribe to continue.', 'error');
+                    const response = await fetch(`${this.baseUrl}/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const data = await response.json();
+
+                    // Legacy user (predates passwords) — send them the set-password flow.
+                    if (data.needs_password_setup) {
+                        this.pendingEmail = email;
+                        await this.requestSetPassword(email);
+                        return;
                     }
+
+                    if (data.no_account) {
+                        this.showStatus('No account found for this email. Please create one.', 'error');
+                        return;
+                    }
+
+                    if (!response.ok || !data.token) {
+                        this.showStatus(data.error || 'Incorrect email or password.', 'error');
+                        return;
+                    }
+
+                    // Authenticated — load current access status.
+                    this.setSession(data.token, email);
+                    const accessData = await this.checkTrialStatus(email);
+                    this.applyAccess(accessData);
+                    this.showUploadSection();
+                    const message = accessData.isSubscribed
+                        ? 'Welcome back! Your subscription is active.'
+                        : (accessData.hasAccess
+                            ? `Welcome back! You have ${this.trialStatus.interviews_remaining} trial interview remaining.`
+                            : 'Welcome back! Your trial has ended — subscribe to continue.');
+                    this.showStatus(message, 'success');
                 } catch (error) {
                     this.showStatus('Login failed. Please try again.', 'error');
                 } finally {
                     this.loginSubmit.disabled = false;
-                    this.loginSubmit.textContent = 'Access My Account';
+                    this.loginSubmit.textContent = 'Sign In';
                 }
             }
-            
+
+            async handleCreateAccount() {
+                const firstName = this.accountFirstName.value.trim();
+                const lastName = this.accountLastName.value.trim();
+                const email = this.accountEmail.value.trim();
+                const password = this.accountPassword.value;
+                const confirm = this.accountPasswordConfirm.value;
+
+                if (!firstName || !lastName) {
+                    this.showStatus('Please enter your first and last name.', 'error');
+                    return;
+                }
+                if (!this.isValidEmail(email)) {
+                    this.showStatus('Please enter a valid email address.', 'error');
+                    return;
+                }
+                if (password.length < 8) {
+                    this.showStatus('Password must be at least 8 characters.', 'error');
+                    return;
+                }
+                if (password !== confirm) {
+                    this.showStatus('Passwords do not match.', 'error');
+                    return;
+                }
+
+                this.accountSubmit.disabled = true;
+                this.accountSubmit.textContent = 'Creating account...';
+
+                try {
+                    const response = await fetch(`${this.baseUrl}/auth/signup`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName })
+                    });
+                    const data = await response.json();
+
+                    if (response.status === 409 || data.account_exists) {
+                        this.showStatus('An account with this email already exists. Please sign in.', 'error');
+                        this.showLoginForm();
+                        this.loginEmail.value = email;
+                        return;
+                    }
+                    if (!response.ok || !data.token) {
+                        this.showStatus(data.error || 'Could not create account. Please try again.', 'error');
+                        return;
+                    }
+
+                    // Account created & signed in. Carry details into the plan step.
+                    this.setSession(data.token, email);
+                    this.customerFirstName = firstName;
+                    this.customerLastName = lastName;
+                    this.signupFirstName.value = firstName;
+                    this.signupLastName.value = lastName;
+                    this.signupEmail.value = email;
+
+                    this.showSignupForm();
+                    this.showStatus('Account created! Now choose how you\'d like to continue.', 'success');
+                } catch (error) {
+                    this.showStatus('Could not create account. Please try again.', 'error');
+                } finally {
+                    this.accountSubmit.disabled = false;
+                    this.accountSubmit.textContent = 'Create Account & Continue';
+                }
+            }
+
+            async requestSetPassword(prefEmail) {
+                const email = (prefEmail || this.loginEmail.value || '').trim();
+                if (!this.isValidEmail(email)) {
+                    this.showStatus('Enter your email above, then click "Forgot / set up your password".', 'error');
+                    return;
+                }
+                try {
+                    await fetch(`${this.baseUrl}/auth/request-set-password`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                } catch (e) { /* fall through to same message */ }
+                this.showStatus("If an account exists for that email, we've sent a link to set your password. Please check your inbox.", 'success');
+            }
+
+            async handleSetPassword() {
+                const password = this.setPasswordInput.value;
+                const confirm = this.setPasswordConfirm.value;
+
+                if (password.length < 8) {
+                    this.showStatus('Password must be at least 8 characters.', 'error');
+                    return;
+                }
+                if (password !== confirm) {
+                    this.showStatus('Passwords do not match.', 'error');
+                    return;
+                }
+                if (!this.setPasswordToken) {
+                    this.showStatus('This link is invalid or has expired. Please request a new one.', 'error');
+                    return;
+                }
+
+                this.setPasswordSubmit.disabled = true;
+                this.setPasswordSubmit.textContent = 'Saving...';
+
+                try {
+                    const response = await fetch(`${this.baseUrl}/auth/set-password`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ token: this.setPasswordToken, password })
+                    });
+                    const data = await response.json();
+
+                    if (!response.ok || !data.token) {
+                        this.showStatus(data.error || 'This link is invalid or has expired. Please request a new one.', 'error');
+                        return;
+                    }
+
+                    const email = (data.user && data.user.email) || this.pendingEmail;
+                    this.setSession(data.token, email);
+                    this.setPasswordToken = null;
+                    // Clean the token out of the URL.
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                    const accessData = await this.checkTrialStatus(email);
+                    this.applyAccess(accessData);
+                    this.showUploadSection();
+                    this.showStatus('Password saved — you\'re all set!', 'success');
+                } catch (error) {
+                    this.showStatus('Could not save password. Please try again.', 'error');
+                } finally {
+                    this.setPasswordSubmit.disabled = false;
+                    this.setPasswordSubmit.textContent = 'Save Password';
+                }
+            }
+
+            logout() {
+                this.clearSession();
+                this.customerEmail = null;
+                this.hasActiveSubscription = false;
+                this.showWelcomeScreen();
+                this.showStatus('You have been logged out.', 'success');
+            }
+
+            async cancelSubscription() {
+                if (!this.hasActiveSubscription) return;
+                const ok = window.confirm(
+                    'Cancel your subscription?\n\nYou will keep full access until the end of your current billing period, then it will not renew.'
+                );
+                if (!ok) return;
+
+                this.cancelSubBtn.disabled = true;
+                this.cancelSubBtn.textContent = 'Cancelling...';
+
+                try {
+                    const response = await fetch(`${this.baseUrl}/cancel-my-subscription`, {
+                        method: 'POST',
+                        headers: this.authHeaders()
+                    });
+                    const data = await response.json();
+
+                    if (response.status === 401) {
+                        this.showStatus('Your session has expired. Please sign in again.', 'error');
+                        this.logout();
+                        return;
+                    }
+                    if (!response.ok || !data.success) {
+                        this.showStatus(data.error || 'Could not cancel right now. Please try again or contact support.', 'error');
+                        return;
+                    }
+
+                    let until = '';
+                    if (data.accessUntil) {
+                        const d = new Date(data.accessUntil);
+                        if (!isNaN(d)) until = ` You'll keep access until ${d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}.`;
+                    }
+                    this.showStatus(`Your subscription is set to cancel at the end of the billing period.${until}`, 'success');
+                    this.cancelSubBtn.style.display = 'none';
+                } catch (error) {
+                    this.showStatus('Could not reach the billing service. Please try again shortly.', 'error');
+                } finally {
+                    this.cancelSubBtn.disabled = false;
+                    this.cancelSubBtn.textContent = 'Cancel Subscription';
+                }
+            }
+
             async handleSignup() {
                 const firstName = this.signupFirstName.value.trim();
                 const lastName = this.signupLastName.value.trim();
@@ -1602,11 +2014,19 @@ The more detailed, the better!"
                 try {
                     const response = await fetch(`${this.baseUrl}/upload_resume`, {
                         method: 'POST',
+                        headers: this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {},
                         body: formData
                     });
-                    
+
+                    if (response.status === 401) {
+                        this.showStatus('Your session has expired. Please sign in again.', 'error');
+                        this.startInterviewBtn.disabled = false;
+                        this.logout();
+                        return;
+                    }
+
                     const data = await response.json();
-                    
+
                     if (response.status === 402) {
                         if (data.trial_expired) {
                             this.trialStatus.trial_expired = true;
