@@ -1546,18 +1546,21 @@ The more detailed, the better!"
                     });
                     
                     const data = await response.json();
-                    
-                    if (data.has_subscription) {
+
+                    // Backend (/trial-status -> get_user_access_status) returns:
+                    //   access_type: 'subscription' | 'trial' | 'new_user' | 'trial_expired'
+                    //   has_access, interviews_remaining, interviews_used, trial_limit
+                    if (data.access_type === 'subscription') {
                         return { hasAccess: true, isSubscribed: true };
                     } else {
-                        return { 
-                            hasAccess: data.trial_status !== 'expired',
+                        return {
+                            hasAccess: data.has_access === true,
                             isSubscribed: false,
                             isTrialUser: true,
-                            interviews_used: data.interviews_used,
-                            interviews_remaining: data.interviews_remaining,
-                            trial_limit: data.trial_limit,
-                            trial_status: data.trial_status
+                            interviews_used: data.interviews_used || 0,
+                            interviews_remaining: data.interviews_remaining || 0,
+                            trial_limit: data.trial_limit || 1,
+                            trial_status: data.access_type === 'trial_expired' ? 'expired' : 'active'
                         };
                     }
                 } catch (error) {
