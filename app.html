@@ -1839,12 +1839,16 @@ The more detailed, the better!"
             }
 
             async handleSignup() {
-                const firstName = this.signupFirstName.value.trim();
-                const lastName = this.signupLastName.value.trim();
-                const email = this.signupEmail.value.trim();
+                // Prefer the authenticated identity (set at account creation or login).
+                // This screen is reached both for new signups and for logged-in users
+                // upgrading from an expired trial — in the latter case the hidden name/
+                // email inputs are empty, so we fall back to the stored customer info.
+                const email = (this.customerEmail || this.signupEmail.value || '').trim();
+                const firstName = (this.customerFirstName || this.signupFirstName.value || '').trim();
+                const lastName = (this.customerLastName || this.signupLastName.value || '').trim();
 
-                if (!firstName || !lastName || !this.isValidEmail(email)) {
-                    this.showStatus('Please fill in all fields with valid information.', 'error');
+                if (!this.isValidEmail(email)) {
+                    this.showStatus('Please sign in or create an account first.', 'error');
                     return;
                 }
 
