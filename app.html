@@ -909,6 +909,8 @@
         .account-link-btn:hover { background: #eeeefb; border-color: #4f46e5; }
         #cancelSubBtn { color: #b00020; border-color: #e6c3c9; }
         #cancelSubBtn:hover { background: #fdecef; border-color: #b00020; }
+        #upgradeBtn { background: #4f46e5; color: #fff; border-color: #4f46e5; font-weight: 600; }
+        #upgradeBtn:hover { background: #4338ca; border-color: #4338ca; }
     </style>
 </head>
 <body>
@@ -1065,6 +1067,7 @@
                         <span class="account-plan" id="accountBarPlan"></span>
                     </div>
                     <div class="account-actions">
+                        <button class="account-link-btn" id="upgradeBtn" style="display:none">Upgrade</button>
                         <button class="account-link-btn" id="cancelSubBtn" style="display:none">Cancel Subscription</button>
                         <button class="account-link-btn" id="logoutBtn">Log out</button>
                     </div>
@@ -1228,6 +1231,7 @@ The more detailed, the better!"
                 // Account bar (in upload section)
                 this.accountBarEmail = document.getElementById('accountBarEmail');
                 this.accountBarPlan = document.getElementById('accountBarPlan');
+                this.upgradeBtn = document.getElementById('upgradeBtn');
                 this.cancelSubBtn = document.getElementById('cancelSubBtn');
                 this.logoutBtn = document.getElementById('logoutBtn');
 
@@ -1283,6 +1287,7 @@ The more detailed, the better!"
                 // Account bar actions
                 if (this.logoutBtn) this.logoutBtn.addEventListener('click', () => this.logout());
                 if (this.cancelSubBtn) this.cancelSubBtn.addEventListener('click', () => this.cancelSubscription());
+                if (this.upgradeBtn) this.upgradeBtn.addEventListener('click', () => this.showUpgradeOptions());
                 
                 // Plan selection events
                 document.addEventListener('click', (e) => {
@@ -1431,6 +1436,13 @@ The more detailed, the better!"
                 this.selectPlan('trial');
             }
 
+            // Logged-in user upgrading from the account bar: show plan selection with
+            // a paid plan preselected (they already are / were on the trial).
+            showUpgradeOptions() {
+                this.showSignupForm();
+                this.selectPlan('quarterly');
+            }
+
             showUploadSection() {
                 this._hideAllAuthScreens();
                 this.uploadSection.classList.add('show');
@@ -1440,14 +1452,19 @@ The more detailed, the better!"
 
             updateAccountBar() {
                 if (this.accountBarEmail) this.accountBarEmail.textContent = this.customerEmail || '';
+                const trialEnded = !this.hasActiveSubscription && this.trialStatus && this.trialStatus.trial_expired;
                 if (this.accountBarPlan) {
                     this.accountBarPlan.textContent = this.hasActiveSubscription
                         ? 'Premium subscription — active'
-                        : 'Free trial';
+                        : (trialEnded ? 'Trial ended — upgrade to continue' : 'Free trial');
                 }
                 // Only subscribers can cancel.
                 if (this.cancelSubBtn) {
                     this.cancelSubBtn.style.display = this.hasActiveSubscription ? 'inline-block' : 'none';
+                }
+                // Anyone without an active subscription can upgrade.
+                if (this.upgradeBtn) {
+                    this.upgradeBtn.style.display = this.hasActiveSubscription ? 'none' : 'inline-block';
                 }
             }
             
